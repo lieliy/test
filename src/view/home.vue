@@ -16,12 +16,38 @@
           </mu-col>
         </mu-row>
       </mu-paper>
-      <list :columns="columns" :nowPage="getLists.page" :totalPage="totalPage" :listData="list"></list>
+      <list
+        :columns="columns"
+        :nowPage="getLists.page"
+        :totalPage="totalPage"
+        :listData="list"
+        @openWin="openWin"
+        @openChange="openChan"
+        @removeId="removeId"
+      ></list>
     </div>
+    <mu-dialog width="360" transition="slide-bottom" fullscreen :open.sync="openWindow">
+      <mu-appbar color="primary" :title="windowContent.name">
+        <mu-button slot="left" icon @click="openWindow = false">
+          <mu-icon value="close"></mu-icon>
+        </mu-button>
+      </mu-appbar>
+      <div style="padding: 24px;">{{windowContent.content.value}}</div>
+    </mu-dialog>
+    <mu-dialog width="360" transition="slide-bottom" fullscreen :open.sync="openChange">
+      <mu-appbar color="primary" :title="windowChange.name">
+        <mu-button slot="left" icon @click="openChange = false">
+          <mu-icon value="close"></mu-icon>
+        </mu-button>
+        <mu-button slot="right" flat @click="changeUp()">完成修改</mu-button>
+      </mu-appbar>
+      <div style="padding: 24px;">{{windowChange.content}}</div>
+    </mu-dialog>
   </section>
 </template>
 
 <script>
+import Message from 'muse-ui-message'
 import leftTab from "../components/leftTab";
 import list from "../components/list";
 import selectCom from "../components/select";
@@ -35,7 +61,13 @@ export default {
   },
   data() {
     return {
-      list: [],
+      list: [
+        { name: "test", tel: "12312312311", content: { value: "Test Object" } }
+      ],
+      openWindow: false,
+      openChange: false,
+      windowContent: {content:{value:''}},
+      windowChange: {},
       totalPage: 0,
       getLists: {
         page: 1,
@@ -80,7 +112,8 @@ export default {
               let li = {
                 name: list[i].username,
                 tel: list[i].tel,
-                content: list[i].business
+                content: list[i].business,
+                type: 2
               };
               newList.push(li);
             }
@@ -89,7 +122,8 @@ export default {
               let li = {
                 name: list[i].username,
                 tel: list[i].tel,
-                content: list[i].company
+                content: list[i].company,
+                type: 3
               };
               newList.push(li);
             }
@@ -98,7 +132,8 @@ export default {
               let li = {
                 name: list[i].username,
                 tel: list[i].tel,
-                content: list[i].worker
+                content: list[i].worker,
+                type: 5
               };
               newList.push(li);
             }
@@ -151,6 +186,22 @@ export default {
     setOption(data) {
       this.getLists.roleId = data;
       this.getList();
+    },
+    changeUp() {},
+    openWin(data) {
+      this.windowContent = data;
+      this.openWindow = true;
+    },
+    openChan(data) {
+      this.windowChange = data;
+      this.openChange = true;
+    },
+    removeId(data) {
+      Message.confirm('确定删除?', '注意').then(({result}) => {
+        if (result) {
+          //
+        }
+      })
     }
   }
 };

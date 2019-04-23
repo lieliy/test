@@ -18,7 +18,7 @@
           :class="{action : openTab === item.url}"
         >
           <mu-list-item-action>
-            <mu-icon value="send"></mu-icon>
+            <mu-icon :value="item.icon"></mu-icon>
           </mu-list-item-action>
           <mu-list-item-title @click="urlRun(item.url)">{{item.name}}</mu-list-item-title>
           <!-- <mu-list-item-action v-if="item.smallList">
@@ -44,12 +44,12 @@ export default {
       openTab: "/home",
       userName: '',
       titleList: [
-        { name: "用户管理", url: "/home" },
-        { name: "个人认证", url: "" },
-        { name: "商家认证", url: "" },
-        { name: "积分商城", url: "" },
-        { name: "订单管理", url: "" },
-        { name: "预约管理", url: "" }
+        { name: "用户管理", url: "/home", icon: 'person' },
+        { name: "个人认证", url: "", icon: 'person_outline' },
+        { name: "商家认证", url: "", icon: 'work' },
+        { name: "积分商城", url: "", icon: 'shopping_basket' },
+        { name: "订单管理", url: "", icon: 'list' },
+        { name: "预约管理", url: "", icon: 'local_phone' }
       ]
     };
   },
