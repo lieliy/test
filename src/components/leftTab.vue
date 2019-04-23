@@ -1,13 +1,93 @@
 <template>
-    <div>123</div>
+  <section>
+    <mu-drawer :open.sync="open" :docked="docked" :z-depth="1" width="200">
+      <div class="user_box">
+        <p class="name">{{userName}}</p>
+        <mu-button flat class="out" color="primary" @click="sinOut()">退出</mu-button>
+      </div>
+      <mu-list toggle-nested>
+        <!-- <mu-list-item v-for="(item,index) in titleList" :key="index" button>
+          <mu-list-item-title>{{item.name}}</mu-list-item-title>
+        </mu-list-item>-->
+        <mu-list-item
+          v-for="(item,index) in titleList"
+          :key="index"
+          button
+          nested
+          :open="openTab === item.url"
+          :class="{action : openTab === item.url}"
+        >
+          <mu-list-item-action>
+            <mu-icon value="send"></mu-icon>
+          </mu-list-item-action>
+          <mu-list-item-title @click="urlRun(item.url)">{{item.name}}</mu-list-item-title>
+          <!-- <mu-list-item-action v-if="item.smallList">
+            <mu-icon class="toggle-icon" size="24" value="keyboard_arrow_down"></mu-icon>
+          </mu-list-item-action>
+          <mu-list-item v-for="(x,y) in item.smallList" :key="y" button slot="nested">
+            <mu-list-item-title>{{x.name}}</mu-list-item-title>
+          </mu-list-item>-->
+        </mu-list-item>
+      </mu-list>
+    </mu-drawer>
+  </section>
 </template>
 
 <script>
-export default {
+import Message from "muse-ui-message";
 
-}
+export default {
+  data() {
+    return {
+      open: true,
+      docked: true,
+      openTab: "/home",
+      userName: '',
+      titleList: [
+        { name: "用户管理", url: "/home" },
+        { name: "个人认证", url: "" },
+        { name: "商家认证", url: "" },
+        { name: "积分商城", url: "" },
+        { name: "订单管理", url: "" },
+        { name: "预约管理", url: "" }
+      ]
+    };
+  },
+  methods: {
+    urlRun(url) {
+      this.$route.push(url);
+    },
+    sinOut() {
+      Message.confirm("确定退出登录?").then(({ result }) => {
+        if (result) {
+          localStorage.removeItem("token");
+          this.$router.push("/login");
+        }
+      });
+    }
+  },
+  created: function() {
+    this.userName = localStorage.getItem('userName')
+    this.openTab = this.$route.fullPath;
+  }
+};
 </script>
 
 <style>
-
+.user_box {
+  padding: 0 20px;
+  float: left;
+  width: 100%;
+  border-bottom: 1px #ddd solid;
+}
+.user_box .name {
+  float: left;
+}
+.user_box .out {
+  margin: 8px 0;
+  float: right;
+}
+.action {
+  background: #eee;
+}
 </style>

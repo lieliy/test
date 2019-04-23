@@ -7,8 +7,10 @@ import Home from '@/view/home'
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {path: '/', redirect: '/login'},
+  routes: [{
+      path: '/',
+      redirect: '/login'
+    },
     {
       path: '/login',
       name: 'login',

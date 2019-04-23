@@ -44,12 +44,13 @@ export default {
     },
     login() {
       this.$axios
-        .post("/login/login", {
+        .post("/login", {
           password: this.form.password,
           tel: this.form.username
         })
         .then(data => {
           localStorage.setItem("token", data.data.token);
+          localStorage.setItem("userName", data.data.username);
           this.$router.push("/home");
         });
     }
