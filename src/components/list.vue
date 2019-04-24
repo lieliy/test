@@ -5,7 +5,7 @@
         <template slot-scope="scope">
           <td class="is-center">{{scope.row.name}}</td>
           <td class="is-center">{{scope.row.tel}}</td>
-          <td v-if="scope.row.password" class="is-center">{{scope.row.password}}</td>
+          <td v-if="scope.row.password" class="is-center">*********</td>
           <td class="is-center">
             <mu-button
               v-if="scope.row.content"
@@ -13,8 +13,8 @@
               color="primary"
               @click="openContent(scope.row)"
             >详情</mu-button>
-            <mu-button small color="primary" @click="changeContent(scope.row)">修改</mu-button>
-            <mu-button small color="primary" @click="removeId(scope.row)">删除</mu-button>
+            <mu-button v-if="showChangeBtn" small color="primary" @click="changeContent(scope.row)">修改</mu-button>
+            <mu-button v-if="showDeleteBtn" small color="primary" @click="removeId(scope.row)">删除</mu-button>
           </td>
         </template>
       </mu-data-table>
@@ -27,7 +27,7 @@
 
 <script>
 export default {
-  props: ["listData", "totalPage", "columns", "nowPage"],
+  props: ["listData", "totalPage", "columns", "nowPage","showChangeBtn","showDeleteBtn"],
   data() {
     return {};
   },

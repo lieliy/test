@@ -1,6 +1,6 @@
 <template>
   <section>
-    <mu-select :label="title" v-model="selectVal" full-width @change="optionChange()">
+    <mu-select :label="title" v-model="nowVal" full-width @change="optionChange()">
       <mu-option v-for="(item,index) in options" :key="index" :label="item.title" :value="item.val"></mu-option>
     </mu-select>
   </section>
@@ -8,21 +8,28 @@
 
 <script>
 export default {
-  props: ["options", "title"],
+  props: ["options", "title", "selectVal"],
   data() {
     return {
-      selectVal: ''
+      nowVal: ''
     };
   },
   methods: {
     optionChange() {
-      this.$emit("optionChanged", this.selectVal);
+      this.$emit("optionChanged", this.nowVal);
     }
   },
   watch: {
-      options(data) {
-          this.selectVal = this.options[0].val
+      selectVal(data) {
+          this.nowVal = data
       }
+  },
+  created: function () {
+    if (this.selectVal !== "") {
+      this.nowVal = this.selectVal
+    } else {
+      this.nowVal = this.options[0].val
+    }
   }
 };
 </script>

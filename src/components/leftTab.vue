@@ -1,6 +1,6 @@
 <template>
   <section>
-    <mu-drawer :open.sync="open" :docked="docked" :z-depth="1" width="200">
+    <mu-drawer :open.sync="open" :docked="docked" :z-depth="1" width="230">
       <div class="user_box">
         <p class="name">{{userName}}</p>
         <mu-button flat class="out" color="primary" @click="sinOut()">退出</mu-button>
@@ -8,25 +8,33 @@
       <mu-list toggle-nested>
         <!-- <mu-list-item v-for="(item,index) in titleList" :key="index" button>
           <mu-list-item-title>{{item.name}}</mu-list-item-title>
-        </mu-list-item>-->
+        </mu-list-item> -->
         <mu-list-item
           v-for="(item,index) in titleList"
           :key="index"
           button
           nested
-          :open="openTab === item.url"
-          :class="{action : openTab === item.url}"
+          :open="openTab === item.urlName"
+          :class="{action : openTab === item.urlName}"
+          @toggle-nested="urlRun(item)"
         >
           <mu-list-item-action>
             <mu-icon :value="item.icon"></mu-icon>
           </mu-list-item-action>
-          <mu-list-item-title @click="urlRun(item.url)">{{item.name}}</mu-list-item-title>
-          <!-- <mu-list-item-action v-if="item.smallList">
+          <mu-list-item-title>{{item.name}}</mu-list-item-title>
+          <mu-list-item-action v-if="item.smallList">
             <mu-icon class="toggle-icon" size="24" value="keyboard_arrow_down"></mu-icon>
           </mu-list-item-action>
-          <mu-list-item v-for="(x,y) in item.smallList" :key="y" button slot="nested">
+          <mu-list-item
+            :class="{action : openTab === item.url}"
+            v-for="(x,y) in item.smallList"
+            :key="y"
+            button
+            slot="nested"
+            @click="getUrl(x.url)"
+          >
             <mu-list-item-title>{{x.name}}</mu-list-item-title>
-          </mu-list-item>-->
+          </mu-list-item>
         </mu-list-item>
       </mu-list>
     </mu-drawer>
@@ -42,20 +50,30 @@ export default {
       open: true,
       docked: true,
       openTab: "/home",
-      userName: '',
+      userName: "",
       titleList: [
-        { name: "用户管理", url: "/home", icon: 'person' },
-        { name: "个人认证", url: "", icon: 'person_outline' },
-        { name: "商家认证", url: "", icon: 'work' },
-        { name: "积分商城", url: "", icon: 'shopping_basket' },
-        { name: "订单管理", url: "", icon: 'list' },
-        { name: "预约管理", url: "", icon: 'local_phone' }
+        { name: "用户管理", url: "/home", icon: "person",urlName: 'home' },
+        {
+          name: "个人认证",
+          icon: "person_outline",
+          urlName: 'check',
+          smallList: [
+            { name: "水工认证", url: "/check/user" },
+            { name: "装修公司认证", url: "/check/company" }
+          ]
+        },
+        { name: "商家认证", url: "", icon: "work" },
+        { name: "积分商城", url: "", icon: "shopping_basket" },
+        { name: "订单管理", url: "", icon: "list" },
+        { name: "预约管理", url: "", icon: "local_phone" }
       ]
     };
   },
   methods: {
-    urlRun(url) {
-      this.$route.push(url);
+    urlRun(data) {
+      if (!data.smallList) {
+        this.$router.push(data.url);
+      }
     },
     sinOut() {
       Message.confirm("确定退出登录?").then(({ result }) => {
@@ -64,11 +82,14 @@ export default {
           this.$router.push("/login");
         }
       });
+    },
+    getUrl(url) {
+      this.$router.push(url);
     }
   },
   created: function() {
-    this.userName = localStorage.getItem('userName')
-    this.openTab = this.$route.fullPath;
+    this.userName = localStorage.getItem("userName");
+    this.openTab = this.$route.name;
   }
 };
 </script>
