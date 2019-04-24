@@ -161,7 +161,7 @@
                   </mu-flex>
                 </mu-flex>
                 <p>营业执照：</p>
-                <img @click="upImg(changeFrom.businessLicense)" :src="changeFrom.businessLicense" alt="营业执照">
+                <img @click="upImg('yyzz')" ref="yyzz" :src="changeFrom.businessLicense" alt="营业执照">
               </div>
             </mu-col>
             <mu-col span="6">
@@ -347,13 +347,12 @@
 
 <script>
 import Message from "muse-ui-message";
-import leftTab from "../components/leftTab";
 import list from "@/components/list";
 import selectCom from "../components/select";
 import sherch from "../components/sherch";
+import qs from 'qs'
 export default {
   components: {
-    leftTab,
     list,
     selectCom,
     sherch
@@ -706,7 +705,7 @@ export default {
       Message.confirm("确定删除?", "注意").then(({ result }) => {
         if (result) {
           this.$axios.post("/admin/delUsers", { ids: data.id }).then(data => {
-            Message.confirm("删除成功！", "注意");
+            Message.alert("删除成功！");
             this.getList();
           });
         }
@@ -720,8 +719,23 @@ export default {
         this.setList(res.data);
       });
     },
-    upImg(data) {
-      console.log(data)
+    upImg(dom) {
+      const _this = this
+      let inputfile = document.createElement('input')
+      inputfile.type = 'file'
+      inputfile.onchange = function(e) {
+        let form = new FormData(); // FormData 对象
+        form.append("file", e.target.files[0]); // 文件对象
+        _this.$axios.filePost('/test/upload', form).then(data => {
+          let url = `${_this.ServiceUrl}/upload/${data.data.data}`
+          _this.$refs[dom].src = url
+        })
+        document.body.removeChild(inputfile)
+      }
+      inputfile.style.display = 'none'
+      inputfile.accept = 'image/png,image/jpeg,image/gif,image/jpg'
+      document.body.appendChild(inputfile)
+      inputfile.click()
     }
   }
 };

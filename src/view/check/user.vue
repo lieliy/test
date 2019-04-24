@@ -22,10 +22,12 @@
             :totalPage="totalPage"
             :listData="list"
             @openWin="openContent"
+            :showChackBtn="true"
+            @checked="checked"
           ></list>
         </div>
         <div class="content_box" v-if="form.ifCheck === 1">
-           <list
+          <list
             :columns="columns"
             :nowPage="form.page"
             :totalPage="totalPage"
@@ -35,15 +37,41 @@
         </div>
       </mu-paper>
     </div>
+    <mu-dialog width="360" transition="slide-bottom" fullscreen :open.sync="openWindow">
+      <mu-appbar color="primary" :title="windowContent.name">
+        <mu-button slot="left" icon @click="openWindow = false">
+          <mu-icon value="close"></mu-icon>
+        </mu-button>
+      </mu-appbar>
+      <div style="padding: 24px;">
+        <div class="worker_box">
+          <mu-row gutter>
+            <mu-col span="6">
+              <div class="grid-cell">
+                <p>姓名：{{windowContent.name}}</p>
+                <p>手机:{{windowContent.tel}}</p>
+              </div>
+            </mu-col>
+            <mu-col span="6">
+              <div class="grid-cell">
+                <p>身份证正面照片：</p>
+                <img :src="windowContent.content.idPositive" alt="身份证正面照片">
+                <p>身份证反面照片：</p>
+                <img :src="windowContent.content.idNegative" alt="身份证反面照片">
+              </div>
+            </mu-col>
+          </mu-row>
+        </div>
+      </div>
+    </mu-dialog>
   </section>
 </template>
 
 <script>
-import leftTab from "@/components/leftTab";
+import Message from "muse-ui-message";
 import list from "@/components/list";
 export default {
   components: {
-    leftTab,
     list
   },
   data() {
@@ -53,6 +81,8 @@ export default {
         page: 1,
         size: 20
       },
+      windowContent: {content:{}},
+      openWindow: false,
       totalPage: 0,
       columns: [
         { title: "用户名", name: "name", align: "center" },
@@ -66,7 +96,19 @@ export default {
   },
   methods: {
     openContent(data) {
-      //
+      this.windowContent = data
+      this.openWindow = true
+    },
+    checked(data) {
+      let msg = "";
+      if (data) {
+        msg = "确定通过？";
+      } else {
+        msg = "确定不通过？";
+      }
+      Message.confirm(msg, "注意").then(({result}) => {
+        this.getList()
+      })
     },
     getList() {
       this.$axios
@@ -81,7 +123,7 @@ export default {
           let newList = [];
           for (let i = 0; i < list.length; i++) {
             let content = {
-              legalPositive: list[i].idPositive,
+              idPositive: list[i].idPositive,
               idNegative: list[i].idNegative
             };
             let li = {

@@ -110,5 +110,26 @@ export default {
         console.log(err, '异常')
       })
     })
-  }
+  },
+  filePost(url, param) {
+    return new Promise((resolve, reject) => {
+      service({
+        method: 'post',
+        url,
+        data: param,
+        headers: { 
+          'Content-Type': 'multipart/form-data'
+        },
+        cancelToken: new CancelToken(c => {
+          cancel = c
+        })
+      }).then(res => {
+        // console.log(res)
+        resolve(res.data)
+      }).catch(err => {
+        // Message.alert(err.message)
+        console.log(err, '异常')
+      })
+    })
+  },
 }

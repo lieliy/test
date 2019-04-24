@@ -15,7 +15,7 @@
           button
           nested
           :open="openTab === item.urlName"
-          :class="{action : openTab === item.urlName}"
+          :active-class="'action'"
           @toggle-nested="urlRun(item)"
         >
           <mu-list-item-action>
@@ -26,7 +26,6 @@
             <mu-icon class="toggle-icon" size="24" value="keyboard_arrow_down"></mu-icon>
           </mu-list-item-action>
           <mu-list-item
-            :class="{action : openTab === item.url}"
             v-for="(x,y) in item.smallList"
             :key="y"
             button

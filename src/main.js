@@ -9,7 +9,14 @@ import 'muse-ui/dist/muse-ui.css'
 import 'muse-ui-message/dist/muse-ui-message.css'
 import Message from 'muse-ui-message'
 
+import leftTab from '@/components/leftTab'
+Vue.use({install: function(Vue){
+    Vue.component('leftTab',leftTab)
+  }
+})
+
 Vue.prototype.$axios = axios
+Vue.prototype.ServiceUrl = 'http://test.cqfuyuan.cn:8089'
 Vue.config.productionTip = false
 Vue.use(MuseUI)
 Vue.use(Message)
