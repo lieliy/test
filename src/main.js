@@ -10,8 +10,10 @@ import 'muse-ui-message/dist/muse-ui-message.css'
 import Message from 'muse-ui-message'
 
 import leftTab from '@/components/leftTab'
+import list from '@/components/list'
 Vue.use({install: function(Vue){
     Vue.component('leftTab',leftTab)
+    Vue.component('list',list)
   }
 })
 

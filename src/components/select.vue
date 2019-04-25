@@ -25,10 +25,11 @@ export default {
       }
   },
   created: function () {
-    if (this.selectVal !== "") {
+    if (this.selectVal) {
       this.nowVal = this.selectVal
     } else {
       this.nowVal = this.options[0].val
+      this.$emit("optionChanged", this.nowVal);
     }
   }
 };

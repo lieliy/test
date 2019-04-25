@@ -26,4 +26,7 @@ img {
   padding-bottom: 0;
   margin-bottom: 20px;
 }
+.v_center{
+  vertical-align: baseline;
+}
 </style>

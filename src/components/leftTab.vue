@@ -8,7 +8,7 @@
       <mu-list toggle-nested>
         <!-- <mu-list-item v-for="(item,index) in titleList" :key="index" button>
           <mu-list-item-title>{{item.name}}</mu-list-item-title>
-        </mu-list-item> -->
+        </mu-list-item>-->
         <mu-list-item
           v-for="(item,index) in titleList"
           :key="index"
@@ -16,7 +16,7 @@
           nested
           :open="openTab === item.urlName"
           :active-class="'action'"
-          @toggle-nested="urlRun(item)"
+          :to="item.url"
         >
           <mu-list-item-action>
             <mu-icon :value="item.icon"></mu-icon>
@@ -29,8 +29,9 @@
             v-for="(x,y) in item.smallList"
             :key="y"
             button
+            :active-class="'action'"
+            :to="x.url"
             slot="nested"
-            @click="getUrl(x.url)"
           >
             <mu-list-item-title>{{x.name}}</mu-list-item-title>
           </mu-list-item>
@@ -48,32 +49,44 @@ export default {
     return {
       open: true,
       docked: true,
-      openTab: "/home",
+      openTab: "",
       userName: "",
       titleList: [
-        { name: "用户管理", url: "/home", icon: "person",urlName: 'home' },
+        { name: "用户管理", url: "/home", icon: "person", urlName: "home" },
         {
           name: "个人认证",
           icon: "person_outline",
-          urlName: 'check',
+          urlName: "check",
           smallList: [
             { name: "水工认证", url: "/check/user" },
-            { name: "装修公司认证", url: "/check/company" }
+            {
+              name: "装修公司认证",
+              url: "/check/company"
+            }
           ]
         },
-        { name: "商家认证", url: "", icon: "work" },
-        { name: "积分商城", url: "", icon: "shopping_basket" },
+        {
+          name: "商家认证",
+          url: "/check/business",
+          icon: "work",
+          urlName: "checkBusiness"
+        },
+        {
+          name: "积分商城",
+          url: "",
+          icon: "shopping_basket",
+          urlName: "integral",
+          smallList: [
+            { name: "积分兑换订单", url: "/integral/order" },
+            { name: "积分商品管理", url: "/integral/control" }
+          ]
+        },
         { name: "订单管理", url: "", icon: "list" },
         { name: "预约管理", url: "", icon: "local_phone" }
       ]
     };
   },
   methods: {
-    urlRun(data) {
-      if (!data.smallList) {
-        this.$router.push(data.url);
-      }
-    },
     sinOut() {
       Message.confirm("确定退出登录?").then(({ result }) => {
         if (result) {
@@ -81,9 +94,6 @@ export default {
           this.$router.push("/login");
         }
       });
-    },
-    getUrl(url) {
-      this.$router.push(url);
     }
   },
   created: function() {

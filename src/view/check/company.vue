@@ -48,16 +48,20 @@
           <mu-row gutter>
             <mu-col span="6">
               <div class="grid-cell">
-                <p>姓名：{{windowContent.name}}</p>
-                <p>手机:{{windowContent.tel}}</p>
+                <p>公司名称：{{windowContent.name}}</p>
+                <p>联系电话:{{windowContent.tel}}</p>
+                <p>公司地址:{{windowContent.content.address}}</p>
+                <p>法人:{{windowContent.content.legalPerson}}</p>
+                <p>营业执照:</p>
+                <img :src="windowContent.content.businessLicense" alt="营业执照">
               </div>
             </mu-col>
             <mu-col span="6">
               <div class="grid-cell">
                 <p>身份证正面照片：</p>
-                <img :src="windowContent.content.idPositive" alt="身份证正面照片">
+                <img :src="windowContent.content.legalPositive" alt="身份证正面照片">
                 <p>身份证反面照片：</p>
-                <img :src="windowContent.content.idNegative" alt="身份证反面照片">
+                <img :src="windowContent.content.legalNegative" alt="身份证反面照片">
               </div>
             </mu-col>
           </mu-row>
@@ -105,7 +109,7 @@ export default {
       Message.confirm(msg, "注意").then(({ result }) => {
         if (result) {
           this.$axios
-            .post("/admin/workerCheck", {
+            .post("/admin/companyCheck", {
               id: data.id,
               ifPass: type
             })
@@ -117,7 +121,7 @@ export default {
     },
     getList() {
       this.$axios
-        .post("/admin/checkWorkers", {
+        .post("/admin/notCheckCompany", {
           ifCheck: this.form.ifCheck,
           page: this.form.page,
           size: this.form.size
@@ -142,13 +146,15 @@ export default {
           }
           for (let i = 0; i < list.length; i++) {
             let content = {
-              idPositive: list[i].idPositive,
-              idNegative: list[i].idNegative
+              address: list[i].address,
+              legalPerson: list[i].legalPerson,
+              legalPositive: list[i].legalPositive,
+              legalNegative: list[i].legalNegative,
+              businessLicense: list[i].businessLicense
             };
-
             let li = {
-              name: list[i].workerName,
-              tel: list[i].workerTel,
+              name: list[i].companyName,
+              tel: list[i].tel,
               id: list[i].id,
               content: content
             };

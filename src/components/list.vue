@@ -3,10 +3,19 @@
     <mu-paper :z-depth="1">
       <mu-data-table :label-float="true" stripe :columns="columns" :data="listData">
         <template slot-scope="scope">
+          <td class="is-center" v-if="order">{{scope.row.numId}}</td>
+          <td class="is-center" v-if="order">{{scope.row.workerName}}</td>
+          <td class="is-center" v-if="order">{{scope.row.goodsContent}}</td>
+          <td class="is-center" v-if="order">{{scope.row.count}}</td>
+          <td class="is-center" v-if="order">{{scope.row.allIntegral}}</td>
+          <td class="is-center" v-if="order">{{scope.row.getType}}</td>
+          <td class="is-center" v-if="scope.row.checked">{{scope.row.checked}}</td>
           <td class="is-center">{{scope.row.name}}</td>
           <td class="is-center">{{scope.row.tel}}</td>
+          <td class="is-center" v-if="order">{{scope.row.address}}</td>
+          <td class="is-center" v-if="order">{{scope.row.createTime}}</td>
           <td v-if="scope.row.password" class="is-center">*********</td>
-          <td class="is-center">
+          <td v-if="!noDo" class="is-center">
             <mu-button
               v-if="scope.row.content"
               small
@@ -19,14 +28,21 @@
               color="primary"
               @click="changeContent(scope.row)"
             >修改</mu-button>
+            <mu-button
+              v-if="showstatusBtn"
+              small
+              color="primary"
+              @click="changeStatus(scope.row)"
+            >{{scope.row.status === 0 ? "立即上架" : "立即下架"}}</mu-button>
+            <mu-button v-if="showDoneBtn" small color="primary" @click="doSomething(scope.row)">完成</mu-button>
             <mu-button v-if="showDeleteBtn" small color="primary" @click="removeId(scope.row)">删除</mu-button>
-            <mu-menu v-if="showChackBtn" cover>
+            <mu-menu class="v_center" v-if="showChackBtn" cover>
               <mu-button small color="primary">审核</mu-button>
               <mu-list slot="content">
-                <mu-list-item @click="checked(true)" button>
+                <mu-list-item @click="checked(1,scope.row)" button>
                   <mu-list-item-title>通过</mu-list-item-title>
                 </mu-list-item>
-                <mu-list-item @click="checked(false)" button>
+                <mu-list-item @click="checked(0,scope.row)" button>
                   <mu-list-item-title>不通过</mu-list-item-title>
                 </mu-list-item>
               </mu-list>
@@ -50,7 +66,11 @@ export default {
     "nowPage",
     "showChangeBtn",
     "showDeleteBtn",
-    "showChackBtn"
+    "showChackBtn",
+    "order",
+    "showDoneBtn",
+    "showstatusBtn",
+    "noDo"
   ],
   data() {
     return {};
@@ -65,8 +85,14 @@ export default {
     removeId(data) {
       this.$emit("removeId", data);
     },
-    checked(data) {
-      this.$emit("checked", data)
+    checked(type, data) {
+      this.$emit("checked", type, data);
+    },
+    doSomething(data) {
+      this.$emit("doSomething", data);
+    },
+    changeStatus(data) {
+      this.$emit("changeStatus", data)
     }
   }
 };

@@ -347,13 +347,11 @@
 
 <script>
 import Message from "muse-ui-message";
-import list from "@/components/list";
-import selectCom from "../components/select";
-import sherch from "../components/sherch";
+import selectCom from "@/components/select";
+import sherch from "@/components/sherch";
 import qs from 'qs'
 export default {
   components: {
-    list,
     selectCom,
     sherch
   },
@@ -652,30 +650,34 @@ export default {
       if (!add) {
         this.userAdd = false;
         if (data.type === 2) {
-          this.changeFrom.businessType = data.content.businessType;
-          this.changeFrom.userName = data.content.businessName;
-          this.changeFrom.manager = data.content.manager;
-          this.changeFrom.userTel = data.content.tel;
-          this.changeFrom.id = data.content.id;
-          this.changeFrom.address = data.content.address;
-          this.changeFrom.businessLicense = data.content.businessLicense;
-          this.changeFrom.legalPositive = data.content.legalPositive;
-          this.changeFrom.legalNegative = data.content.legalNegative;
-          this.changeFrom.type = data.type;
+          this.changeFrom = {
+            businessType: data.content.businessType,
+            userName: data.content.businessName,
+            manager: data.content.manager,
+            userTel: data.content.tel,
+            id: data.content.id,
+            address: data.content.address,
+            businessLicense: data.content.businessLicense,
+            legalPositive: data.content.legalPositive,
+            legalNegative: data.content.legalNegative,
+            type: data.type
+          }
         } else if (data.type === 3) {
-          this.changeFrom.legalPerson = data.content.legalPerson;
-          this.changeFrom.userName = data.content.companyName;
-          this.changeFrom.manager = data.content.manager;
-          this.changeFrom.userTel = data.content.tel;
-          this.changeFrom.id = data.content.id;
-          this.changeFrom.address = data.content.address;
-          this.changeFrom.pipeCount = data.content.pipeCount;
-          this.changeFrom.salesCount = data.content.salesCount;
-          this.changeFrom.installCount = data.content.installCount;
-          this.changeFrom.businessLicense = data.content.businessLicense;
-          this.changeFrom.legalPositive = data.content.legalPositive;
-          this.changeFrom.legalNegative = data.content.legalNegative;
-          this.changeFrom.type = data.type;
+          this.changeFrom = {
+            legalPerson: data.content.legalPerson,
+            userName: data.content.companyName,
+            manager: data.content.manager,
+            userTel: data.content.tel,
+            id: data.content.id,
+            address: data.content.address,
+            pipeCount: data.content.pipeCount,
+            salesCount: data.content.salesCount,
+            installCount: data.content.installCount,
+            businessLicense: data.content.businessLicense,
+            legalPositive: data.content.legalPositive,
+            legalNegative: data.content.legalNegative,
+            type: data.type,
+          }
         } else if (data.type === 5) {
           this.changeFrom.virtualCash = data.content.virtualCash;
           this.changeFrom.userName = data.content.workerName;

@@ -48,16 +48,21 @@
           <mu-row gutter>
             <mu-col span="6">
               <div class="grid-cell">
-                <p>姓名：{{windowContent.name}}</p>
-                <p>手机:{{windowContent.tel}}</p>
+                <p>商家类别：{{windowContent.content.businessType}}</p>
+                <p>商家名称：{{windowContent.name}}</p>
+                <p>联系电话:{{windowContent.tel}}</p>
+                <p>商家详细地址:{{windowContent.content.address}}</p>
+                <p>负责人:{{windowContent.content.manager}}</p>
+                <p>营业执照:</p>
+                <img :src="windowContent.content.businessLicense" alt="营业执照">
               </div>
             </mu-col>
             <mu-col span="6">
               <div class="grid-cell">
                 <p>身份证正面照片：</p>
-                <img :src="windowContent.content.idPositive" alt="身份证正面照片">
+                <img :src="windowContent.content.legalPositive" alt="身份证正面照片">
                 <p>身份证反面照片：</p>
-                <img :src="windowContent.content.idNegative" alt="身份证反面照片">
+                <img :src="windowContent.content.legalNegative" alt="身份证反面照片">
               </div>
             </mu-col>
           </mu-row>
@@ -85,6 +90,16 @@ export default {
         { title: "手机号", name: "tel", align: "center" },
         { title: "操作", name: "control", align: "center" }
       ],
+      businessType: [
+        { title: "快销品", val: 0 },
+        { title: "地板", val: 1 },
+        { title: "瓷砖", val: 2 },
+        { title: "门窗", val: 3 },
+        { title: "卫浴", val: 4 },
+        { title: "灯饰", val: 5 },
+        { title: "厨房设施", val: 6 },
+        { title: "家居", val: 7 }
+      ],
       list: [
         { name: "test", tel: "12312312311", content: { value: "Test Object" } }
       ]
@@ -105,7 +120,7 @@ export default {
       Message.confirm(msg, "注意").then(({ result }) => {
         if (result) {
           this.$axios
-            .post("/admin/workerCheck", {
+            .post("/admin/businessCheck", {
               id: data.id,
               ifPass: type
             })
@@ -117,7 +132,7 @@ export default {
     },
     getList() {
       this.$axios
-        .post("/admin/checkWorkers", {
+        .post("/admin/notCheckBusiness", {
           ifCheck: this.form.ifCheck,
           page: this.form.page,
           size: this.form.size
@@ -142,13 +157,16 @@ export default {
           }
           for (let i = 0; i < list.length; i++) {
             let content = {
-              idPositive: list[i].idPositive,
-              idNegative: list[i].idNegative
+              address: list[i].address,
+              businessType: this.businessType[list[i].businessType].title,
+              manager: list[i].manager,
+              legalPositive: list[i].legalPositive,
+              legalNegative: list[i].legalNegative,
+              businessLicense: list[i].businessLicense
             };
-
             let li = {
-              name: list[i].workerName,
-              tel: list[i].workerTel,
+              name: list[i].businessName,
+              tel: list[i].tel,
               id: list[i].id,
               content: content
             };
