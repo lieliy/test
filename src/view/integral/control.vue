@@ -36,6 +36,7 @@
         :showChangeBtn="true"
         :showstatusBtn="true"
         @changeStatus="statusId"
+        @changePage="changePage"
       ></list>
     </div>
     <mu-dialog
@@ -185,7 +186,8 @@ export default {
       getLists: {
         page: 1,
         region: 1,
-        size: 20
+        size: 20,
+        sherchData: ""
       },
       optionsList: [
         { title: "积分兑换区", val: 1 },
@@ -208,7 +210,12 @@ export default {
     }
   },
   methods: {
+    changePage(page) {
+      this.getLists.page = page
+      this.getList()
+    },
     getList(sherchData) {
+      this.getLists.sherchData = sherchData
       this.$axios
         .post("/admin/integralGoodsList", {
           page: this.getLists.page,
@@ -246,6 +253,7 @@ export default {
     },
     setOption(data) {
       this.getLists.region = data;
+      this.getLists.sherchData = ""
       this.getList();
     },
     changeUp() {

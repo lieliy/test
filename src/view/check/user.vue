@@ -24,6 +24,7 @@
             @openWin="openContent"
             :showChackBtn="true"
             @checked="checked"
+            @changePage="getList"
           ></list>
         </div>
         <div class="content_box" v-if="form.ifCheck === 1">
@@ -33,6 +34,7 @@
             :totalPage="totalPage"
             :listData="list"
             @openWin="openContent"
+            @changePage="getList"
           ></list>
         </div>
       </mu-paper>
@@ -115,7 +117,10 @@ export default {
         }
       });
     },
-    getList() {
+    getList(nowPage) {
+      if (nowPage) {
+        this.form.page
+      }
       this.$axios
         .post("/admin/checkWorkers", {
           ifCheck: this.form.ifCheck,

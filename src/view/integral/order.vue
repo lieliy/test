@@ -24,6 +24,7 @@
             :order="true"
             :showDoneBtn="true"
             @doSomething="done"
+            @changePage="getList"
           ></list>
         </div>
         <div class="content_box" v-if="form.ifCheck === 1">
@@ -34,6 +35,7 @@
             :listData="list"
             :order="true"
             :noDo="true"
+            @changePage="getList"
           ></list>
         </div>
       </mu-paper>
@@ -92,7 +94,10 @@ export default {
         }
       });
     },
-    getList() {
+    getList(nowPage) {
+      if (nowPage) {
+        this.form.page = nowPage
+      }
       this.$axios
         .post("/admin/integralOrders", {
           ifOver: this.form.ifCheck,

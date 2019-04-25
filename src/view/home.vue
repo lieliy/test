@@ -36,6 +36,7 @@
         @removeId="removeId"
         :showDeleteBtn="true"
         :showChangeBtn="true"
+        @changePage="getList"
       ></list>
     </div>
     <mu-dialog width="360" transition="slide-bottom" fullscreen :open.sync="openWindow">
@@ -161,15 +162,15 @@
                   </mu-flex>
                 </mu-flex>
                 <p>营业执照：</p>
-                <img @click="upImg('yyzz')" ref="yyzz" :src="changeFrom.businessLicense" alt="营业执照">
+                <img @click="upImg('businessLicense')" ref="businessLicense" :src="changeFrom.businessLicense" alt="营业执照">
               </div>
             </mu-col>
             <mu-col span="6">
               <div class="grid-cell">
                 <p>身份证正面照片：</p>
-                <img :src="changeFrom.legalPositive" alt="身份证正面照片">
+                <img @click="upImg('legalPositive')" ref="legalPositive" :src="changeFrom.legalPositive" alt="身份证正面照片">
                 <p>身份证反面照片：</p>
-                <img :src="changeFrom.legalNegative" alt="身份证反面照片">
+                <img @click="upImg('legalNegative')" ref="legalNegative" :src="changeFrom.legalNegative" alt="身份证反面照片">
               </div>
             </mu-col>
           </mu-row>
@@ -235,7 +236,7 @@
                   </mu-flex>
                 </mu-flex>
                 <p>营业执照：</p>
-                <img :src="changeFrom.businessLicense" alt="营业执照">
+                <img @click="upImg('businessLicense')" ref="businessLicense" :src="changeFrom.businessLicense" alt="营业执照">
               </div>
             </mu-col>
             <mu-col span="6">
@@ -250,7 +251,7 @@
         </div>
         <div class="worker_box" v-else-if="changeFrom.type === 5">
           <mu-row gutter>
-            <mu-col span="2" offset="5">
+            <mu-col span="4" offset="5">
               <div class="grid-cell">
                 <mu-flex class="flex-wrapper" justify-content="start">
                   <mu-flex class="flex-demo" justify-content="start">
@@ -400,7 +401,10 @@ export default {
     }
   },
   methods: {
-    getList() {
+    getList(nowPage) {
+      if (nowPage) {
+        this.getLists.page = nowPage
+      }
       this.$axios
         .post("/admin/findUserByRole", {
           page: this.getLists.page,
@@ -409,7 +413,7 @@ export default {
         })
         .then(data => {
           this.setList(data.data.content);
-          this.totalPage = data.data.totalPages;
+          this.totalPage = data.data.totalElements;
         });
     },
     setList(data) {
@@ -676,24 +680,28 @@ export default {
             businessLicense: data.content.businessLicense,
             legalPositive: data.content.legalPositive,
             legalNegative: data.content.legalNegative,
-            type: data.type,
+            type: data.type
           }
         } else if (data.type === 5) {
-          this.changeFrom.virtualCash = data.content.virtualCash;
-          this.changeFrom.userName = data.content.workerName;
-          this.changeFrom.salesCount = data.content.salesCount;
-          this.changeFrom.userTel = data.content.workerTel;
-          this.changeFrom.id = data.content.id;
-          this.changeFrom.installCount = data.content.installCount;
-          this.changeFrom.integral = data.content.integral;
-          this.changeFrom.score = data.content.score;
-          this.changeFrom.type = data.type;
+          this.changeFrom = {
+            virtualCash: data.content.virtualCash,
+            userName: data.content.workerName,
+            salesCount: data.content.salesCount,
+            userTel: data.content.workerTel,
+            id: data.content.id,
+            installCount: data.content.installCount,
+            integral: data.content.integral,
+            score: data.content.score,
+            type: data.type
+          }
         } else {
-          this.changeFrom.userName = data.name;
-          this.changeFrom.userTel = data.tel;
-          this.changeFrom.id = data.id;
-          this.changeFrom.userPassword = data.password;
-          this.changeFrom.type = data.type;
+          this.changeFrom = {
+            userName: data.name,
+            userTel: data.tel,
+            id: data.id,
+            userPassword: data.password,
+            type: data.type
+          }
         }
       } else {
         this.userAdd = true;
@@ -731,6 +739,7 @@ export default {
         _this.$axios.filePost('/test/upload', form).then(data => {
           let url = `${_this.ServiceUrl}/upload/${data.data.data}`
           _this.$refs[dom].src = url
+          _this.changeFrom[dom] = url
         })
         document.body.removeChild(inputfile)
       }

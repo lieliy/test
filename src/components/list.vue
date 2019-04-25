@@ -52,7 +52,7 @@
       </mu-data-table>
     </mu-paper>
     <mu-flex class="page_box" justify-content="end">
-      <mu-pagination raised :total="totalPage" :current.sync="nowPage"></mu-pagination>
+      <mu-pagination raised :total="totalPage" :page-size="20" :current.sync="page" @change="changePage"></mu-pagination>
     </mu-flex>
   </section>
 </template>
@@ -73,7 +73,9 @@ export default {
     "noDo"
   ],
   data() {
-    return {};
+    return {
+      page: 1
+    };
   },
   methods: {
     openContent(data) {
@@ -93,8 +95,16 @@ export default {
     },
     changeStatus(data) {
       this.$emit("changeStatus", data)
+    },
+    changePage() {
+      this.$emit("changePage", this.page)
     }
-  }
+  },
+  created: function() {
+    if (this.nowPage) {
+      this.page = this.nowPage
+    }
+  },
 };
 </script>
 
