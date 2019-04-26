@@ -51,6 +51,15 @@ service.interceptors.response.use(function (response) {
         router.push("/login")
       }
     })
+  } else if (res.code === 3) {
+    Message.alert("没有访问权！").then(({
+      result
+    }) => {
+      if (result) {
+        localStorage.removeItem('token')
+        router.push("/login")
+      }
+    })
   } else if (res.code === 0) {
     Message.alert(res.msg)
     return

@@ -3,19 +3,20 @@
     <mu-paper :z-depth="1">
       <mu-data-table :label-float="true" stripe :columns="columns" :data="listData">
         <template slot-scope="scope">
-          <td class="is-center" v-if="order">{{scope.row.numId}}</td>
+          <td class="is-center" v-if="order || orderList">{{scope.row.numId}}</td>
           <td class="is-center" v-if="order">{{scope.row.workerName}}</td>
           <td class="is-center" v-if="order">{{scope.row.goodsContent}}</td>
-          <td class="is-center" v-if="order">{{scope.row.count}}</td>
+          <td class="is-center" v-if="order || orderList">{{scope.row.count}}</td>
           <td class="is-center" v-if="order">{{scope.row.allIntegral}}</td>
-          <td class="is-center" v-if="order">{{scope.row.getType}}</td>
+          <td class="is-center" v-if="order || orderList">{{scope.row.getType}}</td>
           <td class="is-center" v-if="scope.row.checked">{{scope.row.checked}}</td>
           <td class="is-center">{{scope.row.name}}</td>
           <td class="is-center">{{scope.row.tel}}</td>
           <td class="is-center" v-if="order">{{scope.row.address}}</td>
           <td class="is-center" v-if="order">{{scope.row.createTime}}</td>
           <td v-if="scope.row.password" class="is-center">*********</td>
-          <td v-if="!noDo" class="is-center">
+          <td class="is-center" v-if="secend">{{scope.row.secend}}</td>
+          <td class="is-center">
             <mu-button
               v-if="scope.row.content"
               small
@@ -52,7 +53,14 @@
       </mu-data-table>
     </mu-paper>
     <mu-flex class="page_box" justify-content="end">
-      <mu-pagination raised :total="totalPage" :page-size="20" :current.sync="page" @change="changePage"></mu-pagination>
+      <mu-pagination
+        raised
+        :total="totalPage"
+        :page-size="20"
+        :current.sync="page"
+        @change="changePage"
+        v-if="totalPage"
+      ></mu-pagination>
     </mu-flex>
   </section>
 </template>
@@ -70,7 +78,9 @@ export default {
     "order",
     "showDoneBtn",
     "showstatusBtn",
-    "noDo"
+    "noDo",
+    "secend",
+    "orderList"
   ],
   data() {
     return {
@@ -94,17 +104,22 @@ export default {
       this.$emit("doSomething", data);
     },
     changeStatus(data) {
-      this.$emit("changeStatus", data)
+      this.$emit("changeStatus", data);
     },
     changePage() {
-      this.$emit("changePage", this.page)
+      this.$emit("changePage", this.page);
     }
   },
   created: function() {
     if (this.nowPage) {
-      this.page = this.nowPage
+      this.page = this.nowPage;
     }
   },
+  watch: {
+    nowPage(data) {
+      this.page = data;
+    }
+  }
 };
 </script>
 

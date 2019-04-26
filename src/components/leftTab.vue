@@ -81,8 +81,24 @@ export default {
             { name: "积分商品管理", url: "/integral/control" }
           ]
         },
-        { name: "订单管理", url: "", icon: "list" },
-        { name: "预约管理", url: "", icon: "local_phone" }
+        {
+          name: "订单管理",
+          url: "/orderList",
+          urlName: "orderList",
+          icon: "list"
+        },
+        {
+          name: "预约管理",
+          url: "/orderCard",
+          urlName: "orderCard",
+          icon: "local_phone"
+        },
+        {
+          name: "质保卡管理",
+          url: "/cards",
+          urlName: "Cards",
+          icon: "assignment"
+        }
       ]
     };
   },

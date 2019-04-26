@@ -8,6 +8,9 @@ import CheckCompany from '@/view/check/company'
 import CheckBusiness from '@/view/check/business'
 import IntegralOrder from '@/view/integral/order'
 import IntegralControl from '@/view/integral/control'
+import orderCard from '@/view/orderCard'
+import orderList from '@/view/orderList'
+import Cards from '@/view/cards'
 
 Vue.use(Router)
 
@@ -55,6 +58,21 @@ export default new Router({
       path: '/integral/control',
       name: 'integral',
       component: IntegralControl
+    },
+    {
+      path: '/orderCard',
+      name: 'orderCard',
+      component: orderCard
+    },
+    {
+      path: '/orderList',
+      name: 'orderList',
+      component: orderList
+    },
+    {
+      path: '/cards',
+      name: 'Cards',
+      component: Cards
     }
   ]
 })

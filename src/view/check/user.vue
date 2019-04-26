@@ -10,7 +10,7 @@
           text-color="rgba(0, 0, 0, .54)"
           indicator-color="primary"
           center
-          @change="getList()"
+          @change="getList('changeType')"
         >
           <mu-tab>未审核</mu-tab>
           <mu-tab>已审核</mu-tab>
@@ -19,27 +19,27 @@
           <list
             :columns="columns"
             :nowPage="form.page"
-            :totalPage="totalPage"
+            :totalPage="form.totalPage"
             :listData="list"
             @openWin="openContent"
             :showChackBtn="true"
             @checked="checked"
-            @changePage="getList"
+            @changePage="changePage"
           ></list>
         </div>
         <div class="content_box" v-if="form.ifCheck === 1">
           <list
             :columns="columns"
             :nowPage="form.page"
-            :totalPage="totalPage"
+            :totalPage="form.totalPage"
             :listData="list"
             @openWin="openContent"
-            @changePage="getList"
+            @changePage="changePage"
           ></list>
         </div>
       </mu-paper>
     </div>
-    <mu-dialog width="360" transition="slide-bottom" fullscreen :open.sync="openWindow">
+    <mu-dialog :padding="0" scrollable width="360" transition="slide-bottom" fullscreen :open.sync="openWindow">
       <mu-appbar color="primary" :title="windowContent.name">
         <mu-button slot="left" icon @click="openWindow = false">
           <mu-icon value="close"></mu-icon>
@@ -76,12 +76,12 @@ export default {
     return {
       form: {
         ifCheck: 0,
+        totalPage: 0,
         page: 1,
         size: 20
       },
       windowContent: { content: {} },
       openWindow: false,
-      totalPage: 0,
       columns: [
         { title: "用户名", name: "name", align: "center" },
         { title: "手机号", name: "tel", align: "center" },
@@ -117,9 +117,9 @@ export default {
         }
       });
     },
-    getList(nowPage) {
-      if (nowPage) {
-        this.form.page
+    getList(data) {
+      if (data === "changeType") {
+        this.form.page = 1;
       }
       this.$axios
         .post("/admin/checkWorkers", {
@@ -128,7 +128,7 @@ export default {
           size: this.form.size
         })
         .then(data => {
-          this.totalPage = data.data.totalPages;
+          this.form.totalPage = data.data.totalElements;
           let list = data.data.content;
           let newList = [];
           if (this.form.ifCheck === 1) {
@@ -150,7 +150,6 @@ export default {
               idPositive: list[i].idPositive,
               idNegative: list[i].idNegative
             };
-
             let li = {
               name: list[i].workerName,
               tel: list[i].workerTel,
@@ -168,6 +167,10 @@ export default {
           }
           this.list = newList;
         });
+    },
+    changePage(data) {
+      this.form.page = data;
+      this.getList();
     }
   },
   created: function() {

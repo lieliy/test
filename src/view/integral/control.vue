@@ -16,7 +16,7 @@
           </mu-col>
           <mu-col span="6">
             <div class="grid-cell">
-              <sherch :title="'搜索商品名称'" @serch="getList"></sherch>
+              <sherch :title="'搜索商品名称'" @serch="onSherch"></sherch>
             </div>
           </mu-col>
           <mu-col offset="2" span="1">
@@ -29,7 +29,7 @@
       <list
         :columns="columns"
         :nowPage="getLists.page"
-        :totalPage="totalPage"
+        :totalPage="getLists.totalPage"
         :listData="list"
         @openWin="openWin"
         @openChange="openChan"
@@ -45,6 +45,8 @@
       fullscreen
       v-if="openWindow"
       :open.sync="openWindow"
+      :padding="0"
+      scrollable
     >
       <mu-appbar color="primary" :title="windowContent.name">
         <mu-button slot="left" icon @click="openWindow = false">
@@ -56,10 +58,10 @@
           <mu-col span="6">
             <div class="grid-cell">
               <p>商品名称：{{windowContent.name}}</p>
-              <p>所属区域：{{optionsList[Number(windowContent.content.region + 1)].title}}</p>
+              <p>所属区域：{{optionsList[Number(windowContent.content.region - 1)].title}}</p>
               <p
                 v-if="windowContent.content.overTime !== 'Invalid date'"
-              >限时截至时间：{{windowContent.content.overTime}}</p>
+              >限时截至时间：{{windowContent.content.overTimeDate}}</p>
               <p v-if="windowContent.content.remainCount">商品限量：{{windowContent.content.remainCount}}</p>
               <p>商品规格：{{windowContent.tel}}</p>
               <p>商品积分：{{windowContent.content.integral}}</p>
@@ -75,7 +77,14 @@
         </mu-row>
       </div>
     </mu-dialog>
-    <mu-dialog width="360" transition="slide-bottom" fullscreen :open.sync="openChange">
+    <mu-dialog
+      :padding="0"
+      scrollable
+      width="360"
+      transition="slide-bottom"
+      fullscreen
+      :open.sync="openChange"
+    >
       <mu-appbar color="primary" :title="goodsAdd?'添加商品':'修改商品'">
         <mu-button slot="left" icon @click="openChange = false">
           <mu-icon value="close"></mu-icon>
@@ -116,7 +125,7 @@
                   </mu-flex>
                   <mu-flex class="flex-demo" justify-content="end">
                     <mu-paper :z-depth="1">
-                      <mu-date-picker :date.sync="changeFrom.newOverTime"></mu-date-picker>
+                      <mu-date-picker :date.sync="changeFrom.overTime"></mu-date-picker>
                     </mu-paper>
                   </mu-flex>
                 </mu-flex>
@@ -150,7 +159,12 @@
           <mu-col span="6">
             <div class="grid-cell">
               <p>商品图片：</p>
-              <img v-if="changeFrom.goodsPhoto" @click="upImg" :src="changeFrom.goodsPhoto" alt="商品图片">
+              <img
+                v-if="changeFrom.goodsPhoto"
+                @click="upImg"
+                :src="changeFrom.goodsPhoto"
+                alt="商品图片"
+              >
               <mu-button v-if="!changeFrom.goodsPhoto" color="primary" @click="upImg">添加商品图片</mu-button>
             </div>
           </mu-col>
@@ -164,7 +178,6 @@
 import Message from "muse-ui-message";
 import selectCom from "@/components/select";
 import sherch from "@/components/sherch";
-import qs from "qs";
 import moment from "moment";
 export default {
   components: {
@@ -182,10 +195,10 @@ export default {
       openChange: false,
       windowContent: { content: { value: "" } },
       windowChange: {},
-      totalPage: 0,
       getLists: {
         page: 1,
         region: 1,
+        totalPage: 0,
         size: 20,
         sherchData: ""
       },
@@ -211,21 +224,25 @@ export default {
   },
   methods: {
     changePage(page) {
-      this.getLists.page = page
-      this.getList()
+      this.getLists.page = page;
+      this.getList();
     },
-    getList(sherchData) {
-      this.getLists.sherchData = sherchData
+    onSherch(data) {
+      this.getLists.page = 1;
+      this.getLists.sherchData = data;
+      this.getList();
+    },
+    getList() {
       this.$axios
         .post("/admin/integralGoodsList", {
           page: this.getLists.page,
           region: this.getLists.region,
           size: this.getLists.size,
-          goodsName: sherchData
+          goodsName: this.getLists.sherchData
         })
         .then(data => {
           this.setList(data.data.content);
-          this.totalPage = data.data.totalPages;
+          this.getLists.totalPage = data.data.totalElements;
         });
     },
     setList(data) {
@@ -235,7 +252,8 @@ export default {
         let content = {
           goodsPhoto: list[i].goodsPhoto,
           region: list[i].region,
-          overTime: moment(list[i].overTime).format("YYYY-MM-DD HH:mm:ss"),
+          overTime: new Date(list[i].overTime),
+          overTimeDate: moment(list[i].overTime).format('YYYY-MM-DD HH:mm:ss'),
           remainCount: list[i].remainCount,
           integral: list[i].integral,
           sort: list[i].sort
@@ -253,24 +271,37 @@ export default {
     },
     setOption(data) {
       this.getLists.region = data;
-      this.getLists.sherchData = ""
+      this.getLists.sherchData = "";
+      this.getLists.page = 1;
       this.getList();
     },
     changeUp() {
+      let remainCount = "";
+      let id = "";
+      let msg = "";
+      if (this.changeFrom.region === 3) {
+        remainCount = this.changeFrom.remainCount;
+      }
+      if (!this.goodsAdd) {
+        id = this.changeFrom.id;
+        msg = "修改成功！";
+      } else {
+        msg = "添加成功！";
+      }
       this.$axios
         .post("/admin/addIntegralGoods", {
-          address: this.changeFrom.address,
-          businessId: this.changeFrom.id,
-          businessLicense: this.changeFrom.businessLicense,
-          businessName: this.changeFrom.userName,
-          businessType: this.changeFrom.businessType,
-          legalNegative: this.changeFrom.legalNegative,
-          legalPositive: this.changeFrom.legalPositive,
-          manager: this.changeFrom.manager,
-          tel: this.changeFrom.userTel
+          goodsName: this.changeFrom.name,
+          goodsPhoto: this.changeFrom.goodsPhoto,
+          id: id,
+          integral: this.changeFrom.integral,
+          overTime: this.changeFrom.overTime,
+          region: this.changeFrom.region,
+          remainCount: remainCount,
+          sort: this.changeFrom.sort,
+          specifications: this.changeFrom.specifications
         })
         .then(data => {
-          Message.alert("修改成功");
+          Message.alert(msg);
           this.openChange = false;
           this.getList();
         });
@@ -299,7 +330,8 @@ export default {
       } else {
         this.changeFrom = {
           region: 1,
-          goodsPhoto: ''
+          goodsPhoto: "",
+          id: null
         };
         this.goodsAdd = true;
       }

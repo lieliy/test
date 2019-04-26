@@ -10,7 +10,7 @@
           text-color="rgba(0, 0, 0, .54)"
           indicator-color="primary"
           center
-          @change="getList()"
+          @change="getList('changeType')"
         >
           <mu-tab>未完成</mu-tab>
           <mu-tab>已完成</mu-tab>
@@ -19,23 +19,22 @@
           <list
             :columns="columns"
             :nowPage="form.page"
-            :totalPage="totalPage"
+            :totalPage="form.totalPage"
             :listData="list"
             :order="true"
             :showDoneBtn="true"
             @doSomething="done"
-            @changePage="getList"
+            @changePage="changePage"
           ></list>
         </div>
         <div class="content_box" v-if="form.ifCheck === 1">
           <list
             :columns="columns"
             :nowPage="form.page"
-            :totalPage="totalPage"
+            :totalPage="form.totalPage"
             :listData="list"
             :order="true"
-            :noDo="true"
-            @changePage="getList"
+            @changePage="changePage"
           ></list>
         </div>
       </mu-paper>
@@ -51,12 +50,12 @@ export default {
     return {
       form: {
         ifCheck: 0,
+      totalPage: 0,
         page: 1,
         size: 20
       },
       windowContent: {},
       openWindow: false,
-      totalPage: 0,
       columns: [
         { title: "序号", name: "numId", align: "center" },
         { title: "兑换人", name: "name", align: "center" },
@@ -94,9 +93,9 @@ export default {
         }
       });
     },
-    getList(nowPage) {
-      if (nowPage) {
-        this.form.page = nowPage
+    getList(data) {
+      if (data === "changeType") {
+        this.form.page = 1;
       }
       this.$axios
         .post("/admin/integralOrders", {
@@ -105,7 +104,7 @@ export default {
           size: this.form.size
         })
         .then(data => {
-          this.totalPage = data.data.totalPages;
+          this.form.totalPage = data.data.totalElements;
           let list = data.data.content;
           let newList = [];
           if (this.form.ifCheck === 1) {
@@ -160,6 +159,10 @@ export default {
           }
           this.list = newList;
         });
+    },
+    changePage(data) {
+      this.form.page = data;
+      this.getList();
     }
   },
   created: function() {

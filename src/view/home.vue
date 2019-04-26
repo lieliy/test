@@ -29,17 +29,17 @@
       <list
         :columns="columns"
         :nowPage="getLists.page"
-        :totalPage="totalPage"
+        :totalPage="getLists.totalPage"
         :listData="list"
         @openWin="openWin"
         @openChange="openChan"
         @removeId="removeId"
         :showDeleteBtn="true"
         :showChangeBtn="true"
-        @changePage="getList"
+        @changePage="changePage"
       ></list>
     </div>
-    <mu-dialog width="360" transition="slide-bottom" fullscreen :open.sync="openWindow">
+    <mu-dialog :padding="0" scrollable width="360" transition="slide-bottom" fullscreen :open.sync="openWindow">
       <mu-appbar color="primary" :title="windowContent.name">
         <mu-button slot="left" icon @click="openWindow = false">
           <mu-icon value="close"></mu-icon>
@@ -110,7 +110,7 @@
         </div>
       </div>
     </mu-dialog>
-    <mu-dialog width="360" transition="slide-bottom" fullscreen :open.sync="openChange">
+    <mu-dialog width="360" scrollable :padding="0" transition="slide-bottom" fullscreen :open.sync="openChange">
       <mu-appbar color="primary" :title="userAdd?'添加用户':'修改用户'">
         <mu-button slot="left" icon @click="openChange = false">
           <mu-icon value="close"></mu-icon>
@@ -162,15 +162,30 @@
                   </mu-flex>
                 </mu-flex>
                 <p>营业执照：</p>
-                <img @click="upImg('businessLicense')" ref="businessLicense" :src="changeFrom.businessLicense" alt="营业执照">
+                <img
+                  @click="upImg('businessLicense')"
+                  ref="businessLicense"
+                  :src="changeFrom.businessLicense"
+                  alt="营业执照"
+                >
               </div>
             </mu-col>
             <mu-col span="6">
               <div class="grid-cell">
                 <p>身份证正面照片：</p>
-                <img @click="upImg('legalPositive')" ref="legalPositive" :src="changeFrom.legalPositive" alt="身份证正面照片">
+                <img
+                  @click="upImg('legalPositive')"
+                  ref="legalPositive"
+                  :src="changeFrom.legalPositive"
+                  alt="身份证正面照片"
+                >
                 <p>身份证反面照片：</p>
-                <img @click="upImg('legalNegative')" ref="legalNegative" :src="changeFrom.legalNegative" alt="身份证反面照片">
+                <img
+                  @click="upImg('legalNegative')"
+                  ref="legalNegative"
+                  :src="changeFrom.legalNegative"
+                  alt="身份证反面照片"
+                >
               </div>
             </mu-col>
           </mu-row>
@@ -236,7 +251,12 @@
                   </mu-flex>
                 </mu-flex>
                 <p>营业执照：</p>
-                <img @click="upImg('businessLicense')" ref="businessLicense" :src="changeFrom.businessLicense" alt="营业执照">
+                <img
+                  @click="upImg('businessLicense')"
+                  ref="businessLicense"
+                  :src="changeFrom.businessLicense"
+                  alt="营业执照"
+                >
               </div>
             </mu-col>
             <mu-col span="6">
@@ -350,7 +370,6 @@
 import Message from "muse-ui-message";
 import selectCom from "@/components/select";
 import sherch from "@/components/sherch";
-import qs from 'qs'
 export default {
   components: {
     selectCom,
@@ -377,10 +396,10 @@ export default {
       openChange: false,
       windowContent: { content: { value: "" } },
       windowChange: {},
-      totalPage: 0,
       getLists: {
         page: 1,
         roleId: 1,
+        totalPage: 0,
         size: 20
       },
       optionsList: [],
@@ -401,10 +420,7 @@ export default {
     }
   },
   methods: {
-    getList(nowPage) {
-      if (nowPage) {
-        this.getLists.page = nowPage
-      }
+    getList() {
       this.$axios
         .post("/admin/findUserByRole", {
           page: this.getLists.page,
@@ -413,7 +429,7 @@ export default {
         })
         .then(data => {
           this.setList(data.data.content);
-          this.totalPage = data.data.totalElements;
+          this.getLists.totalPage = data.data.totalElements;
         });
     },
     setList(data) {
@@ -665,7 +681,7 @@ export default {
             legalPositive: data.content.legalPositive,
             legalNegative: data.content.legalNegative,
             type: data.type
-          }
+          };
         } else if (data.type === 3) {
           this.changeFrom = {
             legalPerson: data.content.legalPerson,
@@ -681,7 +697,7 @@ export default {
             legalPositive: data.content.legalPositive,
             legalNegative: data.content.legalNegative,
             type: data.type
-          }
+          };
         } else if (data.type === 5) {
           this.changeFrom = {
             virtualCash: data.content.virtualCash,
@@ -693,7 +709,7 @@ export default {
             integral: data.content.integral,
             score: data.content.score,
             type: data.type
-          }
+          };
         } else {
           this.changeFrom = {
             userName: data.name,
@@ -701,7 +717,7 @@ export default {
             id: data.id,
             userPassword: data.password,
             type: data.type
-          }
+          };
         }
       } else {
         this.userAdd = true;
@@ -724,29 +740,33 @@ export default {
     onSerch(data) {
       this.$axios.post("/admin/findUserByTel", { tel: data }).then(res => {
         this.getLists.roleId = res.data.roles[0].id;
-        this.totalPage = 1;
+        this.getLists.totalPage = 1;
         this.getLists.page = 1;
         this.setList(res.data);
       });
     },
     upImg(dom) {
-      const _this = this
-      let inputfile = document.createElement('input')
-      inputfile.type = 'file'
+      const _this = this;
+      let inputfile = document.createElement("input");
+      inputfile.type = "file";
       inputfile.onchange = function(e) {
         let form = new FormData(); // FormData 对象
         form.append("file", e.target.files[0]); // 文件对象
-        _this.$axios.filePost('/test/upload', form).then(data => {
-          let url = `${_this.ServiceUrl}/upload/${data.data.data}`
-          _this.$refs[dom].src = url
-          _this.changeFrom[dom] = url
-        })
-        document.body.removeChild(inputfile)
-      }
-      inputfile.style.display = 'none'
-      inputfile.accept = 'image/png,image/jpeg,image/gif,image/jpg'
-      document.body.appendChild(inputfile)
-      inputfile.click()
+        _this.$axios.filePost("/test/upload", form).then(data => {
+          let url = `${_this.ServiceUrl}/upload/${data.data.data}`;
+          _this.$refs[dom].src = url;
+          _this.changeFrom[dom] = url;
+        });
+        document.body.removeChild(inputfile);
+      };
+      inputfile.style.display = "none";
+      inputfile.accept = "image/png,image/jpeg,image/gif,image/jpg";
+      document.body.appendChild(inputfile);
+      inputfile.click();
+    },
+    changePage(data) {
+        this.getLists.page = data
+        this.getList()
     }
   }
 };
