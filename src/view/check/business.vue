@@ -48,27 +48,41 @@
       <div style="padding: 24px;">
         <div class="worker_box">
           <mu-row gutter>
-            <mu-col span="6">
+            <mu-col span="12">
               <div class="grid-cell">
                 <p>商家类别：{{windowContent.content.businessType}}</p>
                 <p>商家名称：{{windowContent.name}}</p>
                 <p>联系电话:{{windowContent.tel}}</p>
                 <p>商家详细地址:{{windowContent.content.address}}</p>
                 <p>负责人:{{windowContent.content.manager}}</p>
-                <p>营业执照:</p>
-                <img :src="windowContent.content.businessLicense" alt="营业执照">
               </div>
             </mu-col>
-            <mu-col span="6">
+            <mu-col span="12">
               <div class="grid-cell">
-                <p>身份证正面照片：</p>
-                <img :src="windowContent.content.legalPositive" alt="身份证正面照片">
-                <p>身份证反面照片：</p>
-                <img :src="windowContent.content.legalNegative" alt="身份证反面照片">
+                <mu-row gutter>
+                  <mu-col span="4">
+                    <p>营业执照：</p>
+                    <img @click="openBigImgWin(windowContent.content.businessLicense)" :src="windowContent.content.businessLicense" alt="营业执照">
+                  </mu-col>
+                  <mu-col span="4">
+                    <p>身份证正面照片：</p>
+                    <img @click="openBigImgWin(windowContent.content.legalPositive)" :src="windowContent.content.legalPositive" alt="身份证正面照片">
+                  </mu-col>
+                  <mu-col span="4">
+                    <p>身份证反面照片：</p>
+                    <img @click="openBigImgWin(windowContent.content.legalNegative)" :src="windowContent.content.legalNegative" alt="身份证反面照片">
+                  </mu-col>
+                </mu-row>
               </div>
             </mu-col>
           </mu-row>
         </div>
+      </div>
+    </mu-dialog>
+    <mu-dialog transition="slide-bottom" :open.sync="openBigImg">
+      <mu-icon value="close" @click="openBigImg = false"></mu-icon>
+      <div style="padding: 24px;">
+        <img :src="bigImg" alt="">
       </div>
     </mu-dialog>
   </section>
@@ -85,6 +99,8 @@ export default {
         page: 1,
         size: 20
       },
+      openBigImg: false,
+      bigImg: '',
       windowContent: { content: {} },
       openWindow: false,
       columns: [
@@ -102,9 +118,7 @@ export default {
         { title: "厨房设施", val: 6 },
         { title: "家居", val: 7 }
       ],
-      list: [
-        { name: "test", tel: "12312312311", content: { value: "Test Object" } }
-      ]
+      list: []
     };
   },
   methods: {
@@ -190,6 +204,10 @@ export default {
     changePage(data) {
       this.form.page = data;
       this.getList();
+    },
+    openBigImgWin(url) {
+      this.openBigImg = true
+      this.bigImg = url
     }
   },
   created: function() {

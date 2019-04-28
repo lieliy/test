@@ -48,22 +48,34 @@
       <div style="padding: 24px;">
         <div class="worker_box">
           <mu-row gutter>
-            <mu-col span="6">
+            <mu-col span="12">
               <div class="grid-cell">
                 <p>姓名：{{windowContent.name}}</p>
                 <p>手机:{{windowContent.tel}}</p>
               </div>
             </mu-col>
-            <mu-col span="6">
+            <mu-col span="12">
               <div class="grid-cell">
-                <p>身份证正面照片：</p>
-                <img :src="windowContent.content.idPositive" alt="身份证正面照片">
-                <p>身份证反面照片：</p>
-                <img :src="windowContent.content.idNegative" alt="身份证反面照片">
+                <mu-row gutter>
+                  <mu-col span="6">
+                    <p>身份证正面照片：</p>
+                    <img @click="openBigImgWin(windowContent.content.idPositive)" :src="windowContent.content.idPositive" alt="身份证正面照片">
+                  </mu-col>
+                  <mu-col span="6">
+                    <p>身份证反面照片：</p>
+                    <img @click="openBigImgWin(windowContent.content.idNegative)" :src="windowContent.content.idNegative" alt="身份证反面照片">
+                  </mu-col>
+                </mu-row>
               </div>
             </mu-col>
           </mu-row>
         </div>
+      </div>
+    </mu-dialog>
+    <mu-dialog transition="slide-bottom" :open.sync="openBigImg">
+      <mu-icon value="close" @click="openBigImg = false"></mu-icon>
+      <div style="padding: 24px;">
+        <img :src="bigImg" alt="">
       </div>
     </mu-dialog>
   </section>
@@ -80,6 +92,8 @@ export default {
         page: 1,
         size: 20
       },
+      openBigImg: false,
+      bigImg: '',
       windowContent: { content: {} },
       openWindow: false,
       columns: [
@@ -171,6 +185,10 @@ export default {
     changePage(data) {
       this.form.page = data;
       this.getList();
+    },
+    openBigImgWin(url) {
+      this.openBigImg = true
+      this.bigImg = url
     }
   },
   created: function() {

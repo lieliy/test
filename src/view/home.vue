@@ -39,7 +39,14 @@
         @changePage="changePage"
       ></list>
     </div>
-    <mu-dialog :padding="0" scrollable width="360" transition="slide-bottom" fullscreen :open.sync="openWindow">
+    <mu-dialog
+      :padding="0"
+      scrollable
+      width="360"
+      transition="slide-bottom"
+      fullscreen
+      :open.sync="openWindow"
+    >
       <mu-appbar color="primary" :title="windowContent.name">
         <mu-button slot="left" icon @click="openWindow = false">
           <mu-icon value="close"></mu-icon>
@@ -48,29 +55,37 @@
       <div style="padding: 24px;">
         <div class="business_box" v-if="windowContent.type === 2">
           <mu-row gutter>
-            <mu-col span="6">
+            <mu-col span="12">
               <div class="grid-cell">
                 <p>商家名称：{{windowContent.content.businessName}}</p>
                 <p>商家类别：{{businessType[windowContent.content.businessType].title}}</p>
                 <p>联系电话：{{windowContent.content.tel}}</p>
                 <p>商家详细地址：{{windowContent.content.address}}</p>
-                <p>营业执照：</p>
-                <img :src="windowContent.content.businessLicense" alt="营业执照">
               </div>
             </mu-col>
-            <mu-col span="6">
+            <mu-col span="12">
               <div class="grid-cell">
-                <p>身份证正面照片：</p>
-                <img :src="windowContent.content.legalPositive" alt="身份证正面照片">
-                <p>身份证反面照片：</p>
-                <img :src="windowContent.content.legalNegative" alt="身份证反面照片">
+                <mu-row gutter>
+                  <mu-col span="4">
+                    <p>营业执照：</p>
+                    <img @click="openBigImgWin(windowContent.content.businessLicense)" :src="windowContent.content.businessLicense" alt="营业执照">
+                  </mu-col>
+                  <mu-col span="4">
+                    <p>身份证正面照片：</p>
+                    <img @click="openBigImgWin(windowContent.content.legalPositive)" :src="windowContent.content.legalPositive" alt="身份证正面照片">
+                  </mu-col>
+                  <mu-col span="4">
+                    <p>身份证反面照片：</p>
+                    <img @click="openBigImgWin(windowContent.content.legalNegative)" :src="windowContent.content.legalNegative" alt="身份证反面照片">
+                  </mu-col>
+                </mu-row>
               </div>
             </mu-col>
           </mu-row>
         </div>
         <div class="company_box" v-if="windowContent.type === 3">
           <mu-row gutter>
-            <mu-col span="6">
+            <mu-col span="12">
               <div class="grid-cell">
                 <p>公司名称：{{windowContent.content.companyName}}</p>
                 <p>公司地址：{{windowContent.content.address}}</p>
@@ -79,16 +94,24 @@
                 <p>线管数量：{{windowContent.content.pipeCount}}</p>
                 <p>累计销量：{{windowContent.content.salesCount}}</p>
                 <p>已完成家数：{{windowContent.content.installCount}}</p>
-                <p>营业执照：</p>
-                <img :src="windowContent.content.businessLicense" alt="营业执照">
               </div>
             </mu-col>
-            <mu-col span="6">
+            <mu-col span="12">
               <div class="grid-cell">
-                <p>身份证正面照片：</p>
-                <img :src="windowContent.content.legalPositive" alt="身份证正面照片">
-                <p>身份证反面照片：</p>
-                <img :src="windowContent.content.legalNegative" alt="身份证反面照片">
+                <mu-row gutter>
+                  <mu-col span="4">
+                    <p>营业执照：</p>
+                    <img @click="openBigImgWin(windowContent.content.businessLicense)" :src="windowContent.content.businessLicense" alt="营业执照">
+                  </mu-col>
+                  <mu-col span="4">
+                    <p>身份证正面照片：</p>
+                    <img @click="openBigImgWin(windowContent.content.legalPositive)" :src="windowContent.content.legalPositive" alt="身份证正面照片">
+                  </mu-col>
+                  <mu-col span="4">
+                    <p>身份证反面照片：</p>
+                    <img @click="openBigImgWin(windowContent.content.legalNegative)" :src="windowContent.content.legalNegative" alt="身份证反面照片">
+                  </mu-col>
+                </mu-row>
               </div>
             </mu-col>
           </mu-row>
@@ -110,7 +133,14 @@
         </div>
       </div>
     </mu-dialog>
-    <mu-dialog width="360" scrollable :padding="0" transition="slide-bottom" fullscreen :open.sync="openChange">
+    <mu-dialog
+      width="360"
+      scrollable
+      :padding="0"
+      transition="slide-bottom"
+      fullscreen
+      :open.sync="openChange"
+    >
       <mu-appbar color="primary" :title="userAdd?'添加用户':'修改用户'">
         <mu-button slot="left" icon @click="openChange = false">
           <mu-icon value="close"></mu-icon>
@@ -262,9 +292,19 @@
             <mu-col span="6">
               <div class="grid-cell">
                 <p>身份证正面照片：</p>
-                <img :src="changeFrom.legalPositive" alt="身份证正面照片">
+                <img
+                  @click="upImg('legalPositive')"
+                  ref="legalPositive"
+                  :src="changeFrom.legalPositive"
+                  alt="身份证正面照片"
+                >
                 <p>身份证反面照片：</p>
-                <img :src="changeFrom.legalNegative" alt="身份证反面照片">
+                <img
+                  @click="upImg('legalNegative')"
+                  ref="legalNegative"
+                  :src="changeFrom.legalNegative"
+                  alt="身份证反面照片"
+                >
               </div>
             </mu-col>
           </mu-row>
@@ -363,6 +403,12 @@
         </div>
       </div>
     </mu-dialog>
+    <mu-dialog transition="slide-bottom" :open.sync="openBigImg">
+      <mu-icon value="close" @click="openBigImg = false"></mu-icon>
+      <div style="padding: 24px;">
+        <img :src="bigImg" alt="">
+      </div>
+    </mu-dialog>
   </section>
 </template>
 
@@ -392,8 +438,10 @@ export default {
         { title: "厨房设施", val: 6 },
         { title: "家居", val: 7 }
       ],
+      bigImg: "",
       openWindow: false,
       openChange: false,
+      openBigImg: false,
       windowContent: { content: { value: "" } },
       windowChange: {},
       getLists: {
@@ -618,7 +666,10 @@ export default {
               legalPerson: this.changeFrom.legalPerson,
               legalNegative: this.changeFrom.legalNegative,
               legalPositive: this.changeFrom.legalPositive,
-              tel: this.changeFrom.userTel
+              tel: this.changeFrom.userTel,
+              pipeCount: this.changeFrom.pipeCount,
+              salesCount: this.changeFrom.salesCount,
+              installCount: this.changeFrom.installCount
             })
             .then(data => {
               Message.alert("修改成功");
@@ -765,8 +816,12 @@ export default {
       inputfile.click();
     },
     changePage(data) {
-        this.getLists.page = data
-        this.getList()
+      this.getLists.page = data;
+      this.getList();
+    },
+    openBigImgWin(url) {
+      this.openBigImg = true
+      this.bigImg = url
     }
   }
 };

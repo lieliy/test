@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Message from 'muse-ui-message'
+import Loading from 'muse-ui-loading'
 import qs from 'qs'
 import router from '../router'
 
@@ -14,7 +15,6 @@ var service = axios.create({
 service.defaults.withCredentials = false
 service.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8' //配置请求头
 const CancelToken = axios.CancelToken
-
 
 // 添加请求拦截器
 service.interceptors.request.use(function (config) {
@@ -103,6 +103,7 @@ export default {
   },
   //post请求
   post(url, param) {
+    let loading = Loading({})
     return new Promise((resolve, reject) => {
       service({
         method: 'post',
@@ -114,19 +115,22 @@ export default {
       }).then(res => {
         // console.log(res)
         resolve(res.data)
+        loading.close()
       }).catch(err => {
         // Message.alert(err.message)
+        // loading.close()
         console.log(err, '异常')
       })
     })
   },
   filePost(url, param) {
+    const loading = Loading({})
     return new Promise((resolve, reject) => {
       service({
         method: 'post',
         url,
         data: param,
-        headers: { 
+        headers: {
           'Content-Type': 'multipart/form-data'
         },
         cancelToken: new CancelToken(c => {
@@ -135,8 +139,10 @@ export default {
       }).then(res => {
         // console.log(res)
         resolve(res.data)
+        loading.close()
       }).catch(err => {
         // Message.alert(err.message)
+        // loading.close()
         console.log(err, '异常')
       })
     })

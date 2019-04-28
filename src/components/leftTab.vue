@@ -1,11 +1,11 @@
 <template>
   <section>
-    <mu-drawer :open.sync="open" :docked="docked" :z-depth="1" width="230">
+    <mu-drawer class="box" :open.sync="open" :docked="docked" :z-depth="1" width="230">
       <div class="user_box">
         <p class="name">{{userName}}</p>
-        <mu-button flat class="out" color="primary" @click="sinOut()">退出</mu-button>
+        <mu-button flat class="out" color="#fff" @click="sinOut()">退出</mu-button>
       </div>
-      <mu-list toggle-nested>
+      <mu-list class="leftList" toggle-nested>
         <!-- <mu-list-item v-for="(item,index) in titleList" :key="index" button>
           <mu-list-item-title>{{item.name}}</mu-list-item-title>
         </mu-list-item>-->
@@ -16,14 +16,20 @@
           nested
           :open="openTab === item.urlName"
           :active-class="'action'"
+          @toggle-nested="openTab = arguments[0] ? item.urlName : ''"
           :to="item.url"
         >
           <mu-list-item-action>
-            <mu-icon :value="item.icon"></mu-icon>
+            <mu-icon color="#fff" :value="item.icon"></mu-icon>
           </mu-list-item-action>
           <mu-list-item-title>{{item.name}}</mu-list-item-title>
           <mu-list-item-action v-if="item.smallList">
-            <mu-icon class="toggle-icon" size="24" value="keyboard_arrow_down"></mu-icon>
+            <mu-icon
+              color="#fff"
+              class="toggle-icon"
+              size="24"
+              :value="openTab === item.urlName?'keyboard_arrow_up':'keyboard_arrow_down'"
+            ></mu-icon>
           </mu-list-item-action>
           <mu-list-item
             v-for="(x,y) in item.smallList"
@@ -133,7 +139,19 @@ export default {
   margin: 8px 0;
   float: right;
 }
-.action {
-  background: #eee;
+.leftList .action,
+.mu-item-wrapper.hover {
+  background: rgba(245, 245, 245, 0.5);
+  color: rgb(40, 44, 47);
+}
+.leftList .action .mu-item {
+  /* color: rgb(40, 44, 47); */
+}
+.box {
+  background: rgb(40, 44, 47);
+  color: #fff;
+}
+.leftList .mu-item {
+  color: #fff;
 }
 </style>

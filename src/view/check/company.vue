@@ -39,7 +39,14 @@
         </div>
       </mu-paper>
     </div>
-    <mu-dialog scrollable width="360" transition="slide-bottom" fullscreen :open.sync="openWindow">
+    <mu-dialog
+      :padding="0"
+      scrollable
+      width="360"
+      transition="slide-bottom"
+      fullscreen
+      :open.sync="openWindow"
+    >
       <mu-appbar color="primary" :title="windowContent.name">
         <mu-button slot="left" icon @click="openWindow = false">
           <mu-icon value="close"></mu-icon>
@@ -48,26 +55,52 @@
       <div style="padding: 24px;">
         <div class="worker_box">
           <mu-row gutter>
-            <mu-col span="6">
+            <mu-col span="12">
               <div class="grid-cell">
                 <p>公司名称：{{windowContent.name}}</p>
                 <p>联系电话:{{windowContent.tel}}</p>
                 <p>公司地址:{{windowContent.content.address}}</p>
                 <p>法人:{{windowContent.content.legalPerson}}</p>
-                <p>营业执照:</p>
-                <img :src="windowContent.content.businessLicense" alt="营业执照">
               </div>
             </mu-col>
-            <mu-col span="6">
+            <mu-col span="12">
               <div class="grid-cell">
-                <p>身份证正面照片：</p>
-                <img :src="windowContent.content.legalPositive" alt="身份证正面照片">
-                <p>身份证反面照片：</p>
-                <img :src="windowContent.content.legalNegative" alt="身份证反面照片">
+                <mu-row gutter>
+                  <mu-col span="4">
+                    <p>营业执照：</p>
+                    <img
+                      @click="openBigImgWin(windowContent.content.businessLicense)"
+                      :src="windowContent.content.businessLicense"
+                      alt="营业执照"
+                    >
+                  </mu-col>
+                  <mu-col span="4">
+                    <p>身份证正面照片：</p>
+                    <img
+                      @click="openBigImgWin(windowContent.content.legalPositive)"
+                      :src="windowContent.content.legalPositive"
+                      alt="身份证正面照片"
+                    >
+                  </mu-col>
+                  <mu-col span="4">
+                    <p>身份证反面照片：</p>
+                    <img
+                      @click="openBigImgWin(windowContent.content.legalNegative)"
+                      :src="windowContent.content.legalNegative"
+                      alt="身份证反面照片"
+                    >
+                  </mu-col>
+                </mu-row>
               </div>
             </mu-col>
           </mu-row>
         </div>
+      </div>
+    </mu-dialog>
+    <mu-dialog transition="slide-bottom" :open.sync="openBigImg">
+      <mu-icon value="close" @click="openBigImg = false"></mu-icon>
+      <div style="padding: 24px;">
+        <img :src="bigImg" alt>
       </div>
     </mu-dialog>
   </section>
@@ -80,10 +113,12 @@ export default {
     return {
       form: {
         ifCheck: 0,
-      totalPage: 0,
+        totalPage: 0,
         page: 1,
         size: 20
       },
+      openBigImg: false,
+      bigImg: "",
       windowContent: { content: {} },
       openWindow: false,
       columns: [
@@ -179,6 +214,10 @@ export default {
       this.form.page = data;
       this.getList();
     },
+    openBigImgWin(url) {
+      this.openBigImg = true;
+      this.bigImg = url;
+    }
   },
   created: function() {
     this.getList();

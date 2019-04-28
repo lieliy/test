@@ -59,9 +59,7 @@
             <div class="grid-cell">
               <p>商品名称：{{windowContent.name}}</p>
               <p>所属区域：{{optionsList[Number(windowContent.content.region - 1)].title}}</p>
-              <p
-                v-if="windowContent.content.overTime !== 'Invalid date'"
-              >限时截至时间：{{windowContent.content.overTimeDate}}</p>
+              <p v-if="windowContent.content.overTime">限时截至时间：{{windowContent.content.overTime}}</p>
               <p v-if="windowContent.content.remainCount">商品限量：{{windowContent.content.remainCount}}</p>
               <p>商品规格：{{windowContent.tel}}</p>
               <p>商品积分：{{windowContent.content.integral}}</p>
@@ -71,7 +69,28 @@
           <mu-col span="6">
             <div class="grid-cell">
               <p>商品图片：</p>
-              <img :src="windowContent.content.goodsPhoto" alt="商品图片">
+              <!-- <img :src="windowContent.content.goodsPhoto" alt="商品图片"> -->
+              <mu-carousel :hide-controls="windowContent.content.goodsPhoto.length > 1 ? false : true" v-if="changeFrom.goodsPhoto.length !== 0">
+                <mu-icon v-if="windowContent.content.goodsPhoto.length > 1" color="primary" value="chevron_left" slot="left"></mu-icon>
+                <mu-icon v-if="windowContent.content.goodsPhoto.length > 1" color="primary" value="chevron_right" slot="right"></mu-icon>
+                <template slot="indicator" slot-scope="{ index, active }">
+                  <mu-button
+                    icon
+                    color="primary"
+                    class="mu-carousel-indicator-button"
+                    :class="{'mu-carousel-indicator-button__active': active}"
+                  >
+                    <span class="rect-indicator"></span>
+                  </mu-button>
+                </template>
+                <mu-carousel-item
+                  v-for="(item,index) in windowContent.content.goodsPhoto"
+                  :key="index"
+                >
+                  <!-- <img :src="item"> -->
+                  <div class="img" :style="{'background-image':`url(${item}`}"></div>
+                </mu-carousel-item>
+              </mu-carousel>
             </div>
           </mu-col>
         </mu-row>
@@ -86,7 +105,7 @@
       :open.sync="openChange"
     >
       <mu-appbar color="primary" :title="goodsAdd?'添加商品':'修改商品'">
-        <mu-button slot="left" icon @click="openChange = false">
+        <mu-button slot="left" icon @click="closeChange">
           <mu-icon value="close"></mu-icon>
         </mu-button>
         <mu-button slot="right" flat @click="changeUp()">完成{{goodsAdd?"添加":"修改"}}</mu-button>
@@ -159,13 +178,37 @@
           <mu-col span="6">
             <div class="grid-cell">
               <p>商品图片：</p>
-              <img
+              <!-- <img
                 v-if="changeFrom.goodsPhoto"
                 @click="upImg"
                 :src="changeFrom.goodsPhoto"
                 alt="商品图片"
-              >
-              <mu-button v-if="!changeFrom.goodsPhoto" color="primary" @click="upImg">添加商品图片</mu-button>
+              >-->
+              <mu-carousel :hide-controls="changeFrom.goodsPhoto.length > 1 ? false : true" :active="activeImg" v-if="changeFrom.goodsPhoto.length !== 0" @change="changeImg" :cycle="false">
+                <mu-icon v-if="changeFrom.goodsPhoto.length > 1" color="primary" value="chevron_left" slot="left"></mu-icon>
+                <mu-icon v-if="changeFrom.goodsPhoto.length > 1" color="primary" value="chevron_right" slot="right"></mu-icon>
+                <template slot="indicator" slot-scope="{ index, active }">
+                  <mu-button
+                    icon
+                    color="primary"
+                    class="mu-carousel-indicator-button"
+                    :class="{'mu-carousel-indicator-button__active': active}"
+                  >
+                    <span class="rect-indicator"></span>
+                  </mu-button>
+                </template>
+                <mu-carousel-item v-for="(item,index) in changeFrom.goodsPhoto" :key="index">
+                  <!-- <img :src="item"> -->
+                  <div class="img" :style="{'background-image':`url(${item}`}">
+                    <mu-icon @click="deleteImg()" class="close_btn" value="close"></mu-icon>
+                  </div>
+                </mu-carousel-item>
+              </mu-carousel>
+              <mu-flex class="flex-wrapper" justify-content="center">
+                <mu-flex class="flex-demo" justify-content="center">
+                  <mu-button class="addBtn" color="primary" @click="upImg">添加商品图片</mu-button>
+                </mu-flex>
+              </mu-flex>
             </div>
           </mu-col>
         </mu-row>
@@ -186,7 +229,7 @@ export default {
   },
   data() {
     return {
-      changeFrom: { newOverTime: undefined },
+      changeFrom: { newOverTime: undefined,goodsPhoto: [] },
       list: [
         { name: "test", tel: "12312312311", content: { value: "Test Object" } }
       ],
@@ -202,6 +245,7 @@ export default {
         size: 20,
         sherchData: ""
       },
+      activeImg: 0,
       optionsList: [
         { title: "积分兑换区", val: 1 },
         { title: "精品兑换区", val: 2 },
@@ -227,6 +271,17 @@ export default {
       this.getLists.page = page;
       this.getList();
     },
+    imgData(data) {
+      if (data) {
+        if (data.indexOf(",") === -1) {
+          return [data];
+        } else {
+          return data.split(",");
+        }
+      } else {
+        return [];
+      }
+    },
     onSherch(data) {
       this.getLists.page = 1;
       this.getLists.sherchData = data;
@@ -249,11 +304,20 @@ export default {
       let list = data;
       let newList = [];
       for (let i = 0; i < list.length; i++) {
+        let overTime = null;
+        let overTimeDate = null;
+        let imgList = this.imgData(list[i].goodsPhoto);
+        if (list[i].overTime) {
+          overTimeDate = new Date(list[i].overTime);
+          overTime = moment(list[i].overTime).format("YYYY-MM-DD");
+        } else {
+          overTimeDate = new Date();
+        }
         let content = {
-          goodsPhoto: list[i].goodsPhoto,
+          goodsPhoto: imgList,
           region: list[i].region,
-          overTime: new Date(list[i].overTime),
-          overTimeDate: moment(list[i].overTime).format('YYYY-MM-DD HH:mm:ss'),
+          overTime: overTime,
+          overTimeDate: overTimeDate,
           remainCount: list[i].remainCount,
           integral: list[i].integral,
           sort: list[i].sort
@@ -291,7 +355,7 @@ export default {
       this.$axios
         .post("/admin/addIntegralGoods", {
           goodsName: this.changeFrom.name,
-          goodsPhoto: this.changeFrom.goodsPhoto,
+          goodsPhoto: this.changeFrom.goodsPhoto.join(','),
           id: id,
           integral: this.changeFrom.integral,
           overTime: this.changeFrom.overTime,
@@ -322,7 +386,7 @@ export default {
           specifications: data.tel,
           goodsPhoto: data.content.goodsPhoto,
           region: data.content.region,
-          overTime: data.content.overTime,
+          overTime: data.content.overTimeDate,
           remainCount: data.content.remainCount,
           integral: data.content.integral,
           sort: data.content.sort
@@ -330,7 +394,7 @@ export default {
       } else {
         this.changeFrom = {
           region: 1,
-          goodsPhoto: "",
+          goodsPhoto: [],
           id: null
         };
         this.goodsAdd = true;
@@ -367,7 +431,8 @@ export default {
         form.append("file", e.target.files[0]); // 文件对象
         _this.$axios.filePost("/test/upload", form).then(data => {
           let url = `${_this.ServiceUrl}/upload/${data.data.data}`;
-          _this.changeFrom.goodsPhoto = url;
+          // _this.changeFrom.goodsPhoto = url;
+          _this.changeFrom.goodsPhoto.push(url);
         });
         document.body.removeChild(inputfile);
       };
@@ -375,10 +440,38 @@ export default {
       inputfile.accept = "image/png,image/jpeg,image/gif,image/jpg";
       document.body.appendChild(inputfile);
       inputfile.click();
+    },
+    deleteImg() {
+      Message.confirm(`确定删除此图片？`, "注意").then(({ result }) => {
+        if (result) {
+          this.changeFrom.goodsPhoto.splice(this.activeImg,1)
+          this.activeImg = 0
+        }
+      });
+    },
+    changeImg(index) {
+      this.activeImg = index
+    },
+    closeChange() {
+      this.getList()
+      this.openChange = false
     }
   }
 };
 </script>
 
 <style>
+.addBtn {
+  margin-top: 20px;
+}
+.mu-carousel-indicator-button {
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  background: #2196f3;
+  opacity: 0.3;
+}
+.mu-carousel-indicator-button__active {
+  opacity: 1;
+}
 </style>

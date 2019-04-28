@@ -7,7 +7,9 @@ import axios from './util/http'
 import MuseUI from 'muse-ui'
 import 'muse-ui/dist/muse-ui.css'
 import 'muse-ui-message/dist/muse-ui-message.css'
+import 'muse-ui-loading/dist/muse-ui-loading.css'
 import Message from 'muse-ui-message'
+import Loading from 'muse-ui-loading'
 
 import leftTab from '@/components/leftTab'
 import list from '@/components/list'
@@ -22,6 +24,7 @@ Vue.prototype.ServiceUrl = 'http://test.cqfuyuan.cn:8089'
 Vue.config.productionTip = false
 Vue.use(MuseUI)
 Vue.use(Message)
+Vue.use(Loading)
 
 
 /* eslint-disable no-new */

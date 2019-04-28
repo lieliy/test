@@ -14,6 +14,21 @@ export default {
 img {
   max-width: 100%;
 }
+.img{
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative;
+}
+.img .close_btn{
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  color: #2196f3;
+  cursor: pointer;
+}
 .right_list {
   position: absolute;
   right: 0;

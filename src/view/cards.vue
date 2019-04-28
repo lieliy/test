@@ -167,32 +167,71 @@
               <mu-col span="6" offset="3">
                 <div class="grid-cell">
                   <p>第一次细节照片：</p>
-                  <mu-carousel v-if="windowContent.detailPhoto1 !== 'noImg'">
+                  <mu-carousel :hide-controls="windowContent.detailPhoto1.length > 1 ? false : true" v-if="windowContent.detailPhoto1.length !== 0">
+                    <mu-icon v-if="windowContent.detailPhoto1.length > 1" color="primary" value="chevron_left" slot="left"></mu-icon>
+                    <mu-icon v-if="windowContent.detailPhoto1.length > 1" color="primary" value="chevron_right" slot="right"></mu-icon>
+                    <template slot="indicator" slot-scope="{ index, active }">
+                      <mu-button
+                        icon
+                        color="primary"
+                        class="mu-carousel-indicator-button"
+                        :class="{'mu-carousel-indicator-button__active': active}"
+                      >
+                        <span class="rect-indicator"></span>
+                      </mu-button>
+                    </template>
                     <mu-carousel-item
                       v-for="(item,index) in windowContent.detailPhoto1"
                       :key="index"
                     >
-                      <img :src="item">
+                      <!-- <img :src="item"> -->
+                      <div class="img" :style="{'background-image':`url(${item}`}"></div>
                     </mu-carousel-item>
                   </mu-carousel>
                   <p v-else>暂无图片</p>
                   <p>第一次压力照片：</p>
-                  <mu-carousel v-if="windowContent.pressurePhoto1 !== 'noImg'">
+                  <mu-carousel :hide-controls="windowContent.pressurePhoto1.length > 1 ? false : true" v-if="windowContent.pressurePhoto1.length !== 0">
+                    <mu-icon v-if="windowContent.pressurePhoto1.length > 1" color="primary" value="chevron_left" slot="left"></mu-icon>
+                    <mu-icon v-if="windowContent.pressurePhoto1.length > 1" color="primary" value="chevron_right" slot="right"></mu-icon>
+                    <template slot="indicator" slot-scope="{ index, active }">
+                      <mu-button
+                        icon
+                        color="primary"
+                        class="mu-carousel-indicator-button"
+                        :class="{'mu-carousel-indicator-button__active': active}"
+                      >
+                        <span class="rect-indicator"></span>
+                      </mu-button>
+                    </template>
                     <mu-carousel-item
                       v-for="(item,index) in windowContent.pressurePhoto1"
                       :key="index"
                     >
-                      <img :src="item">
+                      <!-- <img :src="item"> -->
+                      <div class="img" :style="{'background-image':`url(${item}`}"></div>
                     </mu-carousel-item>
                   </mu-carousel>
                   <p v-else>暂无图片</p>
                   <p>质保单照片：</p>
-                  <mu-carousel v-if="windowContent.warrantyPhoto !== 'noImg'">
+                  <mu-carousel :hide-controls="windowContent.warrantyPhoto.length > 1 ? false : true" v-if="windowContent.warrantyPhoto.length !== 0">
+                    <mu-icon v-if="windowContent.warrantyPhoto.length > 1" color="primary" value="chevron_left" slot="left"></mu-icon>
+                    <mu-icon v-if="windowContent.warrantyPhoto.length > 1" color="primary" value="chevron_right" slot="right"></mu-icon>
+                    <template slot="indicator" slot-scope="{ index, active }">
+                      <mu-button
+                        icon
+                        color="primary"
+                        class="mu-carousel-indicator-button"
+                        :class="{'mu-carousel-indicator-button__active': active}"
+                      >
+                        <span class="rect-indicator"></span>
+                      </mu-button>
+                    </template>
                     <mu-carousel-item
                       v-for="(item,index) in windowContent.warrantyPhoto"
                       :key="index"
                     >
-                      <img :src="item">
+                      <!-- <img :src="item"> -->
+                      <div class="img" :style="{'background-image':`url(${item}`}"></div>
                     </mu-carousel-item>
                   </mu-carousel>
                   <p v-else>暂无图片</p>
@@ -210,19 +249,45 @@
             <mu-row>
               <mu-col span="6" offset="3">
                 <p>第一次细节照片：</p>
-                <mu-carousel v-if="windowContent.detailPhoto2 !== 'noImg'">
+                <mu-carousel :hide-controls="windowContent.detailPhoto2.length > 1 ? false : true" v-if="windowContent.detailPhoto2.length !== 0">
+                  <mu-icon v-if="windowContent.detailPhoto2.length > 1" color="primary" value="chevron_left" slot="left"></mu-icon>
+                  <mu-icon v-if="windowContent.detailPhoto2.length > 1" color="primary" value="chevron_right" slot="right"></mu-icon>
+                  <template slot="indicator" slot-scope="{ index, active }">
+                    <mu-button
+                      icon
+                      color="primary"
+                      class="mu-carousel-indicator-button"
+                      :class="{'mu-carousel-indicator-button__active': active}"
+                    >
+                      <span class="rect-indicator"></span>
+                    </mu-button>
+                  </template>
                   <mu-carousel-item v-for="(item,index) in windowContent.detailPhoto2" :key="index">
-                    <img :src="item">
+                    <!-- <img :src="item"> -->
+                    <div class="img" :style="{'background-image':`url(${item}`}"></div>
                   </mu-carousel-item>
                 </mu-carousel>
                 <p v-else>暂无图片</p>
                 <p>第一次压力照片：</p>
-                <mu-carousel v-if="windowContent.pressurePhoto2 !== 'noImg'">
+                <mu-carousel :hide-controls="windowContent.pressurePhoto2.length > 1 ? false : true" v-if="windowContent.pressurePhoto2.length !== 0">
+                  <mu-icon v-if="windowContent.pressurePhoto2.length > 1" color="primary" value="chevron_left" slot="left"></mu-icon>
+                  <mu-icon v-if="windowContent.pressurePhoto2.length > 1" color="primary" value="chevron_right" slot="right"></mu-icon>
+                  <template slot="indicator" slot-scope="{ index, active }">
+                    <mu-button
+                      icon
+                      color="primary"
+                      class="mu-carousel-indicator-button"
+                      :class="{'mu-carousel-indicator-button__active': active}"
+                    >
+                      <span class="rect-indicator"></span>
+                    </mu-button>
+                  </template>
                   <mu-carousel-item
                     v-for="(item,index) in windowContent.pressurePhoto2"
                     :key="index"
                   >
-                    <img :src="item">
+                    <!-- <img :src="item"> -->
+                    <div class="img" :style="{'background-image':`url(${item}`}"></div>
                   </mu-carousel-item>
                 </mu-carousel>
                 <p v-else>暂无图片</p>
@@ -260,7 +325,7 @@ export default {
         { title: "预约试压时间", name: "time", align: "center" },
         { title: "操作", name: "control", align: "center" }
       ],
-      windowContent: {}
+      windowContent: {detailPhoto1: [],pressurePhoto1: [], warrantyPhoto: [],detailPhoto2: [],pressurePhoto2: []}
     };
   },
   created: function() {
@@ -288,7 +353,7 @@ export default {
         let pipeType = "";
         let detailPhoto1 = this.imgData(data[i].detailPhoto1);
         let pressurePhoto1 = this.imgData(data[i].pressurePhoto1);
-        let warrantyPhoto = this.imgData(data[i].pressurePhoto1);
+        let warrantyPhoto = this.imgData(data[i].warrantyPhoto);
         let detailPhoto2 = this.imgData(data[i].detailPhoto2);
         let pressurePhoto2 = this.imgData(data[i].pressurePhoto2);
         switch (data[i].billStatus) {
@@ -417,7 +482,7 @@ export default {
           return data.split(",");
         }
       } else {
-        return "noImg";
+        return [];
       }
     }
   }
@@ -427,5 +492,15 @@ export default {
 <style>
 .content_box {
   padding: 20px;
+}
+.mu-carousel-indicator-button {
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  background: #2196f3;
+  opacity: 0.3;
+}
+.mu-carousel-indicator-button__active {
+  opacity: 1;
 }
 </style>
