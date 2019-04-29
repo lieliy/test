@@ -70,9 +70,22 @@
             <div class="grid-cell">
               <p>商品图片：</p>
               <!-- <img :src="windowContent.content.goodsPhoto" alt="商品图片"> -->
-              <mu-carousel :hide-controls="windowContent.content.goodsPhoto.length > 1 ? false : true" v-if="changeFrom.goodsPhoto.length !== 0">
-                <mu-icon v-if="windowContent.content.goodsPhoto.length > 1" color="primary" value="chevron_left" slot="left"></mu-icon>
-                <mu-icon v-if="windowContent.content.goodsPhoto.length > 1" color="primary" value="chevron_right" slot="right"></mu-icon>
+              <mu-carousel
+                :hide-controls="windowContent.content.goodsPhoto.length > 0 ? false : true"
+                v-if="windowContent.content.goodsPhoto.length !== 0"
+              >
+                <mu-icon
+                  v-if="windowContent.content.goodsPhoto.length > 1"
+                  color="primary"
+                  value="chevron_left"
+                  slot="left"
+                ></mu-icon>
+                <mu-icon
+                  v-if="windowContent.content.goodsPhoto.length > 1"
+                  color="primary"
+                  value="chevron_right"
+                  slot="right"
+                ></mu-icon>
                 <template slot="indicator" slot-scope="{ index, active }">
                   <mu-button
                     icon
@@ -88,7 +101,11 @@
                   :key="index"
                 >
                   <!-- <img :src="item"> -->
-                  <div class="img" :style="{'background-image':`url(${item}`}"></div>
+                  <div
+                    @click="openBigImgWin(item)"
+                    class="img"
+                    :style="{'background-image':`url(${item}`}"
+                  ></div>
                 </mu-carousel-item>
               </mu-carousel>
             </div>
@@ -184,9 +201,25 @@
                 :src="changeFrom.goodsPhoto"
                 alt="商品图片"
               >-->
-              <mu-carousel :hide-controls="changeFrom.goodsPhoto.length > 1 ? false : true" :active="activeImg" v-if="changeFrom.goodsPhoto.length !== 0" @change="changeImg" :cycle="false">
-                <mu-icon v-if="changeFrom.goodsPhoto.length > 1" color="primary" value="chevron_left" slot="left"></mu-icon>
-                <mu-icon v-if="changeFrom.goodsPhoto.length > 1" color="primary" value="chevron_right" slot="right"></mu-icon>
+              <mu-carousel
+                :hide-controls="changeFrom.goodsPhoto.length > 1 ? false : true"
+                :active="activeImg"
+                v-if="changeFrom.goodsPhoto.length !== 0"
+                @change="changeImg"
+                :cycle="false"
+              >
+                <mu-icon
+                  v-if="changeFrom.goodsPhoto.length > 1"
+                  color="primary"
+                  value="chevron_left"
+                  slot="left"
+                ></mu-icon>
+                <mu-icon
+                  v-if="changeFrom.goodsPhoto.length > 1"
+                  color="primary"
+                  value="chevron_right"
+                  slot="right"
+                ></mu-icon>
                 <template slot="indicator" slot-scope="{ index, active }">
                   <mu-button
                     icon
@@ -199,9 +232,12 @@
                 </template>
                 <mu-carousel-item v-for="(item,index) in changeFrom.goodsPhoto" :key="index">
                   <!-- <img :src="item"> -->
-                  <div class="img" :style="{'background-image':`url(${item}`}">
-                    <mu-icon @click="deleteImg()" class="close_btn" value="close"></mu-icon>
-                  </div>
+                  <mu-icon @click="deleteImg()" class="img_close_btn" value="close"></mu-icon>
+                  <div
+                    @click="openBigImgWin(item)"
+                    class="img"
+                    :style="{'background-image':`url(${item}`}"
+                  ></div>
                 </mu-carousel-item>
               </mu-carousel>
               <mu-flex class="flex-wrapper" justify-content="center">
@@ -212,6 +248,12 @@
             </div>
           </mu-col>
         </mu-row>
+      </div>
+    </mu-dialog>
+    <mu-dialog transition="slide-bottom" :open.sync="openBigImg">
+      <mu-icon value="close" @click="openBigImg = false"></mu-icon>
+      <div style="padding: 24px;">
+        <img class="bigImg" :src="bigImg" alt>
       </div>
     </mu-dialog>
   </section>
@@ -229,7 +271,7 @@ export default {
   },
   data() {
     return {
-      changeFrom: { newOverTime: undefined,goodsPhoto: [] },
+      changeFrom: { newOverTime: undefined, goodsPhoto: [] },
       list: [
         { name: "test", tel: "12312312311", content: { value: "Test Object" } }
       ],
@@ -245,6 +287,8 @@ export default {
         size: 20,
         sherchData: ""
       },
+      openBigImg: false,
+      bigImg: "",
       activeImg: 0,
       optionsList: [
         { title: "积分兑换区", val: 1 },
@@ -355,7 +399,7 @@ export default {
       this.$axios
         .post("/admin/addIntegralGoods", {
           goodsName: this.changeFrom.name,
-          goodsPhoto: this.changeFrom.goodsPhoto.join(','),
+          goodsPhoto: this.changeFrom.goodsPhoto.join(","),
           id: id,
           integral: this.changeFrom.integral,
           overTime: this.changeFrom.overTime,
@@ -444,17 +488,21 @@ export default {
     deleteImg() {
       Message.confirm(`确定删除此图片？`, "注意").then(({ result }) => {
         if (result) {
-          this.changeFrom.goodsPhoto.splice(this.activeImg,1)
-          this.activeImg = 0
+          this.changeFrom.goodsPhoto.splice(this.activeImg, 1);
+          this.activeImg = 0;
         }
       });
     },
     changeImg(index) {
-      this.activeImg = index
+      this.activeImg = index;
     },
     closeChange() {
-      this.getList()
-      this.openChange = false
+      this.getList();
+      this.openChange = false;
+    },
+    openBigImgWin(url) {
+      this.openBigImg = true;
+      this.bigImg = url;
     }
   }
 };

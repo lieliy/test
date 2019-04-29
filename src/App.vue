@@ -22,12 +22,19 @@ img {
   background-repeat: no-repeat;
   position: relative;
 }
-.img .close_btn{
+.img_close_btn{
   position: absolute;
   right: 20px;
   top: 10px;
   color: #2196f3;
   cursor: pointer;
+  z-index: 9;
+}
+.smallIng{
+  max-height: 500px;
+}
+.bigImg{
+  max-height: 80vh;
 }
 .right_list {
   position: absolute;

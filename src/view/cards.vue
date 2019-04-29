@@ -185,7 +185,7 @@
                       :key="index"
                     >
                       <!-- <img :src="item"> -->
-                      <div class="img" :style="{'background-image':`url(${item}`}"></div>
+                      <div @click="openBigImgWin(item)" class="img" :style="{'background-image':`url(${item}`}"></div>
                     </mu-carousel-item>
                   </mu-carousel>
                   <p v-else>暂无图片</p>
@@ -208,7 +208,7 @@
                       :key="index"
                     >
                       <!-- <img :src="item"> -->
-                      <div class="img" :style="{'background-image':`url(${item}`}"></div>
+                      <div @click="openBigImgWin(item)" class="img" :style="{'background-image':`url(${item}`}"></div>
                     </mu-carousel-item>
                   </mu-carousel>
                   <p v-else>暂无图片</p>
@@ -231,7 +231,7 @@
                       :key="index"
                     >
                       <!-- <img :src="item"> -->
-                      <div class="img" :style="{'background-image':`url(${item}`}"></div>
+                      <div @click="openBigImgWin(item)" class="img" :style="{'background-image':`url(${item}`}"></div>
                     </mu-carousel-item>
                   </mu-carousel>
                   <p v-else>暂无图片</p>
@@ -264,7 +264,7 @@
                   </template>
                   <mu-carousel-item v-for="(item,index) in windowContent.detailPhoto2" :key="index">
                     <!-- <img :src="item"> -->
-                    <div class="img" :style="{'background-image':`url(${item}`}"></div>
+                    <div @click="openBigImgWin(item)" class="img" :style="{'background-image':`url(${item}`}"></div>
                   </mu-carousel-item>
                 </mu-carousel>
                 <p v-else>暂无图片</p>
@@ -287,7 +287,7 @@
                     :key="index"
                   >
                     <!-- <img :src="item"> -->
-                    <div class="img" :style="{'background-image':`url(${item}`}"></div>
+                    <div @click="openBigImgWin(item)" class="img" :style="{'background-image':`url(${item}`}"></div>
                   </mu-carousel-item>
                 </mu-carousel>
                 <p v-else>暂无图片</p>
@@ -296,6 +296,12 @@
           </div>
         </div>
       </mu-dialog>
+      <mu-dialog transition="slide-bottom" :open.sync="openBigImg">
+      <mu-icon value="close" @click="openBigImg = false"></mu-icon>
+      <div style="padding: 24px;">
+        <img class="bigImg" :src="bigImg" alt="">
+      </div>
+    </mu-dialog>
     </div>
   </section>
 </template>
@@ -315,6 +321,8 @@ export default {
         size: 20,
         contentType: 0
       },
+      openBigImg: false,
+      bigImg: '',
       list: [],
       openWindow: false,
       columns: [
@@ -484,6 +492,10 @@ export default {
       } else {
         return [];
       }
+    },
+    openBigImgWin(url) {
+      this.openBigImg = true
+      this.bigImg = url
     }
   }
 };

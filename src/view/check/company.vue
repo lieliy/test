@@ -72,6 +72,7 @@
                       @click="openBigImgWin(windowContent.content.businessLicense)"
                       :src="windowContent.content.businessLicense"
                       alt="营业执照"
+                      class="smallIng"
                     >
                   </mu-col>
                   <mu-col span="4">
@@ -80,6 +81,7 @@
                       @click="openBigImgWin(windowContent.content.legalPositive)"
                       :src="windowContent.content.legalPositive"
                       alt="身份证正面照片"
+                      class="smallIng"
                     >
                   </mu-col>
                   <mu-col span="4">
@@ -88,6 +90,7 @@
                       @click="openBigImgWin(windowContent.content.legalNegative)"
                       :src="windowContent.content.legalNegative"
                       alt="身份证反面照片"
+                      class="smallIng"
                     >
                   </mu-col>
                 </mu-row>
@@ -100,7 +103,7 @@
     <mu-dialog transition="slide-bottom" :open.sync="openBigImg">
       <mu-icon value="close" @click="openBigImg = false"></mu-icon>
       <div style="padding: 24px;">
-        <img :src="bigImg" alt>
+        <img class="bigImg" :src="bigImg" alt>
       </div>
     </mu-dialog>
   </section>

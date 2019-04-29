@@ -58,6 +58,7 @@
             <mu-col span="12">
               <div class="grid-cell">
                 <p>商家名称：{{windowContent.content.businessName}}</p>
+                <p>负责人：{{windowContent.content.manager}}</p>
                 <p>商家类别：{{businessType[windowContent.content.businessType].title}}</p>
                 <p>联系电话：{{windowContent.content.tel}}</p>
                 <p>商家详细地址：{{windowContent.content.address}}</p>
@@ -68,15 +69,15 @@
                 <mu-row gutter>
                   <mu-col span="4">
                     <p>营业执照：</p>
-                    <img @click="openBigImgWin(windowContent.content.businessLicense)" :src="windowContent.content.businessLicense" alt="营业执照">
+                    <img class="smallIng" @click="openBigImgWin(windowContent.content.businessLicense)" :src="windowContent.content.businessLicense" alt="营业执照">
                   </mu-col>
                   <mu-col span="4">
                     <p>身份证正面照片：</p>
-                    <img @click="openBigImgWin(windowContent.content.legalPositive)" :src="windowContent.content.legalPositive" alt="身份证正面照片">
+                    <img class="smallIng" @click="openBigImgWin(windowContent.content.legalPositive)" :src="windowContent.content.legalPositive" alt="身份证正面照片">
                   </mu-col>
                   <mu-col span="4">
                     <p>身份证反面照片：</p>
-                    <img @click="openBigImgWin(windowContent.content.legalNegative)" :src="windowContent.content.legalNegative" alt="身份证反面照片">
+                    <img class="smallIng" @click="openBigImgWin(windowContent.content.legalNegative)" :src="windowContent.content.legalNegative" alt="身份证反面照片">
                   </mu-col>
                 </mu-row>
               </div>
@@ -101,15 +102,15 @@
                 <mu-row gutter>
                   <mu-col span="4">
                     <p>营业执照：</p>
-                    <img @click="openBigImgWin(windowContent.content.businessLicense)" :src="windowContent.content.businessLicense" alt="营业执照">
+                    <img class="smallIng" @click="openBigImgWin(windowContent.content.businessLicense)" :src="windowContent.content.businessLicense" alt="营业执照">
                   </mu-col>
                   <mu-col span="4">
                     <p>身份证正面照片：</p>
-                    <img @click="openBigImgWin(windowContent.content.legalPositive)" :src="windowContent.content.legalPositive" alt="身份证正面照片">
+                    <img class="smallIng" @click="openBigImgWin(windowContent.content.legalPositive)" :src="windowContent.content.legalPositive" alt="身份证正面照片">
                   </mu-col>
                   <mu-col span="4">
                     <p>身份证反面照片：</p>
-                    <img @click="openBigImgWin(windowContent.content.legalNegative)" :src="windowContent.content.legalNegative" alt="身份证反面照片">
+                    <img class="smallIng" @click="openBigImgWin(windowContent.content.legalNegative)" :src="windowContent.content.legalNegative" alt="身份证反面照片">
                   </mu-col>
                 </mu-row>
               </div>
@@ -192,7 +193,7 @@
                   </mu-flex>
                 </mu-flex>
                 <p>营业执照：</p>
-                <img
+                <img class="smallIng"
                   @click="upImg('businessLicense')"
                   ref="businessLicense"
                   :src="changeFrom.businessLicense"
@@ -203,14 +204,14 @@
             <mu-col span="6">
               <div class="grid-cell">
                 <p>身份证正面照片：</p>
-                <img
+                <img class="smallIng"
                   @click="upImg('legalPositive')"
                   ref="legalPositive"
                   :src="changeFrom.legalPositive"
                   alt="身份证正面照片"
                 >
                 <p>身份证反面照片：</p>
-                <img
+                <img class="smallIng"
                   @click="upImg('legalNegative')"
                   ref="legalNegative"
                   :src="changeFrom.legalNegative"
@@ -281,7 +282,7 @@
                   </mu-flex>
                 </mu-flex>
                 <p>营业执照：</p>
-                <img
+                <img class="smallIng"
                   @click="upImg('businessLicense')"
                   ref="businessLicense"
                   :src="changeFrom.businessLicense"
@@ -292,14 +293,14 @@
             <mu-col span="6">
               <div class="grid-cell">
                 <p>身份证正面照片：</p>
-                <img
+                <img class="smallIng"
                   @click="upImg('legalPositive')"
                   ref="legalPositive"
                   :src="changeFrom.legalPositive"
                   alt="身份证正面照片"
                 >
                 <p>身份证反面照片：</p>
-                <img
+                <img class="smallIng"
                   @click="upImg('legalNegative')"
                   ref="legalNegative"
                   :src="changeFrom.legalNegative"
@@ -406,7 +407,7 @@
     <mu-dialog transition="slide-bottom" :open.sync="openBigImg">
       <mu-icon value="close" @click="openBigImg = false"></mu-icon>
       <div style="padding: 24px;">
-        <img :src="bigImg" alt="">
+        <img class="bigImg" :src="bigImg" alt="">
       </div>
     </mu-dialog>
   </section>
@@ -416,6 +417,7 @@
 import Message from "muse-ui-message";
 import selectCom from "@/components/select";
 import sherch from "@/components/sherch";
+import Loading from 'muse-ui-loading'
 export default {
   components: {
     selectCom,
@@ -459,13 +461,13 @@ export default {
     };
   },
   created: function() {
-    let token = localStorage.getItem("token");
-    if (!token) {
-      this.$router.push("/login");
-    } else {
+    // let token = localStorage.getItem("token");
+    // if (!token) {
+      // this.$router.push("/login");
+    // } else {
       this.getList();
       this.getUser();
-    }
+    // }
   },
   methods: {
     getList() {
@@ -489,16 +491,7 @@ export default {
         { title: "操作", name: "control", align: "center" }
       ];
       if (this.getLists.roleId === 2) {
-        if (!list.length) {
-          let li = {
-            name: list.username,
-            tel: list.tel,
-            id: list.id,
-            content: list.business,
-            type: 2
-          };
-          newList.push(li);
-        } else {
+        if (list.length) {
           for (let i = 0; i < list.length; i++) {
             let li = {
               name: list[i].username,
@@ -511,16 +504,7 @@ export default {
           }
         }
       } else if (this.getLists.roleId === 3) {
-        if (!list.length) {
-          let li = {
-            name: list.username,
-            tel: list.tel,
-            id: list.id,
-            content: list.company,
-            type: 3
-          };
-          newList.push(li);
-        } else {
+        if (list.length) {
           for (let i = 0; i < list.length; i++) {
             let li = {
               name: list[i].username,
@@ -533,16 +517,7 @@ export default {
           }
         }
       } else if (this.getLists.roleId === 5) {
-        if (!list.length) {
-          let li = {
-            name: list.username,
-            tel: list.tel,
-            id: list.id,
-            content: list.worker,
-            type: 5
-          };
-          newList.push(li);
-        } else {
+        if (list.length) {
           for (let i = 0; i < list.length; i++) {
             let li = {
               name: list[i].username,
@@ -555,15 +530,7 @@ export default {
           }
         }
       } else if (this.getLists.roleId === 6) {
-        if (!list.length) {
-          let li = {
-            name: list.username,
-            id: list.id,
-            type: this.getLists.roleId,
-            tel: list.tel
-          };
-          newList.push(li);
-        } else {
+        if (list.length) {
           for (let i = 0; i < list.length; i++) {
             let li = {
               name: list[i].username,
@@ -575,16 +542,7 @@ export default {
           }
         }
       } else {
-        if (!list.length) {
-          let li = {
-            name: list.username,
-            id: list.id,
-            tel: list.tel,
-            type: this.getLists.roleId,
-            password: list.password
-          };
-          newList.push(li);
-        } else {
+        if (list.length) {
           for (let i = 0; i < list.length; i++) {
             let li = {
               name: list[i].username,
@@ -606,7 +564,7 @@ export default {
       this.list = newList;
     },
     getUser() {
-      this.$axios.post("/admin/findRoles", {}).then(data => {
+      this.$axios.post("/admin/findRoles").then(data => {
         let list = data.data;
         this.setOptionList(list);
       });

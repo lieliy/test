@@ -62,15 +62,15 @@
                 <mu-row gutter>
                   <mu-col span="4">
                     <p>营业执照：</p>
-                    <img @click="openBigImgWin(windowContent.content.businessLicense)" :src="windowContent.content.businessLicense" alt="营业执照">
+                    <img class="smallIng" @click="openBigImgWin(windowContent.content.businessLicense)" :src="windowContent.content.businessLicense" alt="营业执照">
                   </mu-col>
                   <mu-col span="4">
                     <p>身份证正面照片：</p>
-                    <img @click="openBigImgWin(windowContent.content.legalPositive)" :src="windowContent.content.legalPositive" alt="身份证正面照片">
+                    <img class="smallIng" @click="openBigImgWin(windowContent.content.legalPositive)" :src="windowContent.content.legalPositive" alt="身份证正面照片">
                   </mu-col>
                   <mu-col span="4">
                     <p>身份证反面照片：</p>
-                    <img @click="openBigImgWin(windowContent.content.legalNegative)" :src="windowContent.content.legalNegative" alt="身份证反面照片">
+                    <img class="smallIng" @click="openBigImgWin(windowContent.content.legalNegative)" :src="windowContent.content.legalNegative" alt="身份证反面照片">
                   </mu-col>
                 </mu-row>
               </div>
@@ -82,7 +82,7 @@
     <mu-dialog transition="slide-bottom" :open.sync="openBigImg">
       <mu-icon value="close" @click="openBigImg = false"></mu-icon>
       <div style="padding: 24px;">
-        <img :src="bigImg" alt="">
+        <img class="bigImg" :src="bigImg" alt="">
       </div>
     </mu-dialog>
   </section>

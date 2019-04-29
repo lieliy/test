@@ -103,7 +103,9 @@ export default {
   },
   //post请求
   post(url, param) {
-    let loading = Loading({})
+    // if (!loading) {
+      const loading = Loading({})
+    // }
     return new Promise((resolve, reject) => {
       service({
         method: 'post',
@@ -115,10 +117,12 @@ export default {
       }).then(res => {
         // console.log(res)
         resolve(res.data)
+        // console.log(loading);
         loading.close()
       }).catch(err => {
         // Message.alert(err.message)
-        // loading.close()
+        // console.log(loading);
+        loading.close()
         console.log(err, '异常')
       })
     })
@@ -142,7 +146,7 @@ export default {
         loading.close()
       }).catch(err => {
         // Message.alert(err.message)
-        // loading.close()
+        loading.close()
         console.log(err, '异常')
       })
     })

@@ -2,7 +2,7 @@
   <section class="box">
     <mu-paper class="login_box" :z-depth="1">
       <p class="title">登录</p>
-      <mu-form ref="form" :model="form" class="mu-demo-form">
+      <mu-form v-on:keyup.enter="submit" ref="form" :model="form" class="mu-demo-form">
         <mu-form-item
           label="用户名"
           prop="username"
@@ -68,6 +68,7 @@ export default {
 .box {
   height: 100vh;
   position: relative;
+  background: rgb(40, 44, 47);
 }
 .title {
   font-size: 20px;
