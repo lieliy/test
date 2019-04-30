@@ -498,6 +498,7 @@ export default {
     },
     closeChange() {
       this.getList();
+      this.activeImg = 0;
       this.openChange = false;
     },
     openBigImgWin(url) {

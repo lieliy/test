@@ -94,9 +94,15 @@ export default {
           icon: "list"
         },
         {
-          name: "预约管理",
+          name: "预约卡号记录",
           url: "/orderCard",
           urlName: "orderCard",
+          icon: "local_phone"
+        },
+        {
+          name: "预约管理",
+          url: "/cardsList",
+          urlName: "cardsList",
           icon: "local_phone"
         },
         {

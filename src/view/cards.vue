@@ -6,7 +6,7 @@
         <mu-row gutter>
           <mu-col span="6">
             <div class="grid-cell">
-              <sherch :title="'搜索质保号'" @serch="onSerch"></sherch>
+              <sherch :title="'搜索质保卡号'" @serch="onSerch"></sherch>
             </div>
           </mu-col>
         </mu-row>
@@ -57,7 +57,7 @@
                   <p>制单日期：{{windowContent.makeBillDate}}</p>
                 </mu-flex>
                 <mu-flex class="flex-wrapper" justify-content="start">
-                  <p>质保卡卡号：{{windowContent.promiseCard}}</p>
+                  <p>质保卡号：{{windowContent.promiseCard}}</p>
                 </mu-flex>
                 <mu-flex class="flex-wrapper" justify-content="start">
                   <p>单据状态：{{windowContent.billStatus}}</p>
@@ -326,7 +326,7 @@ export default {
       list: [],
       openWindow: false,
       columns: [
-        { title: "质保卡卡号", name: "num", align: "center" },
+        { title: "质保卡号", name: "num", align: "center" },
         { title: "试压地址", name: "add", align: "center" },
         { title: "业主姓名", name: "name", align: "center" },
         { title: "业主电话", name: "tel", align: "center" },

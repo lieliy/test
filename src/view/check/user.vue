@@ -57,13 +57,17 @@
             <mu-col span="12">
               <div class="grid-cell">
                 <mu-row gutter>
-                  <mu-col span="6">
+                  <mu-col span="4">
                     <p>身份证正面照片：</p>
                     <img class="smallIng" @click="openBigImgWin(windowContent.content.idPositive)" :src="windowContent.content.idPositive" alt="身份证正面照片">
                   </mu-col>
-                  <mu-col span="6">
+                  <mu-col span="4">
                     <p>身份证反面照片：</p>
                     <img class="smallIng" @click="openBigImgWin(windowContent.content.idNegative)" :src="windowContent.content.idNegative" alt="身份证反面照片">
+                  </mu-col>
+                  <mu-col span="4">
+                    <p>本人头像：</p>
+                    <img class="smallIng" @click="openBigImgWin(windowContent.content.head)" :src="windowContent.content.head" alt="身份证反面照片">
                   </mu-col>
                 </mu-row>
               </div>
@@ -162,7 +166,8 @@ export default {
           for (let i = 0; i < list.length; i++) {
             let content = {
               idPositive: list[i].idPositive,
-              idNegative: list[i].idNegative
+              idNegative: list[i].idNegative,
+              head: list[i].head
             };
             let li = {
               name: list[i].workerName,

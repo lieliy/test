@@ -11,6 +11,7 @@ import IntegralControl from '@/view/integral/control'
 import orderCard from '@/view/orderCard'
 import orderList from '@/view/orderList'
 import Cards from '@/view/cards'
+import CardsList from '@/view/cardsList'
 
 Vue.use(Router)
 
@@ -73,6 +74,11 @@ export default new Router({
       path: '/cards',
       name: 'Cards',
       component: Cards
+    },
+    {
+      path: '/cardsList',
+      name: 'cardsList',
+      component: CardsList
     }
   ]
 })
