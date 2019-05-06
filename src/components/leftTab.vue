@@ -97,7 +97,7 @@ export default {
           name: "预约卡号记录",
           url: "/orderCard",
           urlName: "orderCard",
-          icon: "local_phone"
+          icon: "book"
         },
         {
           name: "预约管理",

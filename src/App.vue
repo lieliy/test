@@ -35,6 +35,7 @@ img {
 }
 .bigImg{
   max-height: 80vh;
+  max-width: 80vh;
 }
 .right_list {
   position: absolute;
@@ -67,5 +68,11 @@ img {
   -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
   background: #ededed;
+}
+.rotate_left{
+  position: absolute;
+  right: -15px;
+  top: 50%;
+  cursor: pointer;
 }
 </style>

@@ -381,7 +381,7 @@
                 <selectCom
                   v-if="userAdd"
                   style="width: 256px;"
-                  :options="[{title:'服务工程师',val:4},{title:'一般管理员',val:7},{title:'客服',val:8},{title:'试压员',val:9}]"
+                  :options="[{title:'服务工程师',val:4},{title:'一般管理员',val:7},{title:'客服',val:8}]"
                   @optionChanged="roleIdAdd"
                   :title="'角色类别'"
                 ></selectCom>

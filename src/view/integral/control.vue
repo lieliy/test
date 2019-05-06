@@ -64,6 +64,7 @@
               <p>商品规格：{{windowContent.tel}}</p>
               <p>商品积分：{{windowContent.content.integral}}</p>
               <p>商品排序：{{windowContent.content.sort}}</p>
+              <p v-if="windowContent.content.allCount">累计销量：{{windowContent.content.allCount}}</p>
             </div>
           </mu-col>
           <mu-col span="6">
@@ -190,6 +191,16 @@
                   <mu-text-field v-model="changeFrom.sort"></mu-text-field>
                 </mu-flex>
               </mu-flex>
+              <div v-show="changeFrom.region === 2">
+                <mu-flex class="flex-wrapper" justify-content="start">
+                  <mu-flex class="flex-demo" justify-content="start">
+                    <p>累计销量：</p>
+                  </mu-flex>
+                  <mu-flex class="flex-demo" justify-content="end">
+                    <mu-text-field v-model="changeFrom.allCount"></mu-text-field>
+                  </mu-flex>
+                </mu-flex>
+              </div>
             </div>
           </mu-col>
           <mu-col span="6">
@@ -364,7 +375,8 @@ export default {
           overTimeDate: overTimeDate,
           remainCount: list[i].remainCount,
           integral: list[i].integral,
-          sort: list[i].sort
+          sort: list[i].sort,
+          allCount: list[i].allCount
         };
         let li = {
           name: list[i].goodsName,
@@ -385,10 +397,16 @@ export default {
     },
     changeUp() {
       let remainCount = "";
+      let overTime = "";
+      let allCount = "";
       let id = "";
       let msg = "";
       if (this.changeFrom.region === 3) {
         remainCount = this.changeFrom.remainCount;
+        overTime = this.changeFrom.overTime;
+      }
+      if (this.changeFrom.region === 2) {
+        allCount = this.changeFrom.allCount;
       }
       if (!this.goodsAdd) {
         id = this.changeFrom.id;
@@ -402,11 +420,12 @@ export default {
           goodsPhoto: this.changeFrom.goodsPhoto.join(","),
           id: id,
           integral: this.changeFrom.integral,
-          overTime: this.changeFrom.overTime,
+          overTime: overTime,
           region: this.changeFrom.region,
           remainCount: remainCount,
           sort: this.changeFrom.sort,
-          specifications: this.changeFrom.specifications
+          specifications: this.changeFrom.specifications,
+          allCount: allCount
         })
         .then(data => {
           Message.alert(msg);

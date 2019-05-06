@@ -75,10 +75,20 @@
                   <p>期望时间：{{windowContent.expectTime}}</p>
                 </mu-flex>
                 <mu-flex class="flex-wrapper" justify-content="start">
-                  <p>现场是否张贴温馨提示和阀门贴：{{windowContent.ifPostTips === 0 ? "否" : "是"}}</p>
+                  <p>
+                    现场是否张贴温馨提示和阀门贴：
+                    <span
+                      v-if="windowContent.ifPostTips !== null"
+                    >{{windowContent.ifPostTips === 0 ? "否" : "是"}}</span>
+                  </p>
                 </mu-flex>
                 <mu-flex class="flex-wrapper" justify-content="start">
-                  <p>是否发送短信：{{windowContent.ifSendMsg === 0 ? "否" : "是"}}</p>
+                  <p>
+                    是否发送短信：
+                    <span
+                      v-if="windowContent.ifSendMsg !== null"
+                    >{{windowContent.ifSendMsg === 0 ? "否" : "是"}}</span>
+                  </p>
                 </mu-flex>
               </mu-col>
               <mu-col span="4">
@@ -144,7 +154,7 @@
                     <p>试压时间：{{windowContent.pressureTime}}</p>
                   </mu-flex>
                   <mu-flex class="flex-wrapper" justify-content="start">
-                    <p>试压压力：{{windowContent.pressure}}</p>
+                    <p>试压压力：{{windowContent.pressure}} Mpa</p>
                   </mu-flex>
                   <mu-flex class="flex-wrapper" justify-content="start">
                     <p>产品真伪：{{windowContent.ifTrue === 0 ? "否" : "是"}}</p>
@@ -153,7 +163,7 @@
                     <p>是否上传图片：{{windowContent.ifUploadPhoto === 0 ? "否" : "是"}}</p>
                   </mu-flex>
                   <mu-flex class="flex-wrapper" justify-content="start">
-                    <p>保压时间：{{windowContent.keepPressureTime}}</p>
+                    <p>保压时间：{{windowContent.keepPressureTime}} Min</p>
                   </mu-flex>
                   <mu-flex class="flex-wrapper" justify-content="start">
                     <p>房屋类型：{{windowContent.houseType === 0 ? "一厨一卫" : "两卫一厨"}}</p>
@@ -167,9 +177,22 @@
               <mu-col span="6" offset="3">
                 <div class="grid-cell">
                   <p>第一次细节照片：</p>
-                  <mu-carousel :hide-controls="windowContent.detailPhoto1.length > 1 ? false : true" v-if="windowContent.detailPhoto1.length !== 0">
-                    <mu-icon v-if="windowContent.detailPhoto1.length > 1" color="primary" value="chevron_left" slot="left"></mu-icon>
-                    <mu-icon v-if="windowContent.detailPhoto1.length > 1" color="primary" value="chevron_right" slot="right"></mu-icon>
+                  <mu-carousel
+                    :hide-controls="windowContent.detailPhoto1.length > 1 ? false : true"
+                    v-if="windowContent.detailPhoto1.length !== 0"
+                  >
+                    <mu-icon
+                      v-if="windowContent.detailPhoto1.length > 1"
+                      color="primary"
+                      value="chevron_left"
+                      slot="left"
+                    ></mu-icon>
+                    <mu-icon
+                      v-if="windowContent.detailPhoto1.length > 1"
+                      color="primary"
+                      value="chevron_right"
+                      slot="right"
+                    ></mu-icon>
                     <template slot="indicator" slot-scope="{ index, active }">
                       <mu-button
                         icon
@@ -185,14 +208,31 @@
                       :key="index"
                     >
                       <!-- <img :src="item"> -->
-                      <div @click="openBigImgWin(item)" class="img" :style="{'background-image':`url(${item}`}"></div>
+                      <div
+                        @click="openBigImgWin(item)"
+                        class="img"
+                        :style="{'background-image':`url(${item}`}"
+                      ></div>
                     </mu-carousel-item>
                   </mu-carousel>
                   <p v-else>暂无图片</p>
                   <p>第一次压力照片：</p>
-                  <mu-carousel :hide-controls="windowContent.pressurePhoto1.length > 1 ? false : true" v-if="windowContent.pressurePhoto1.length !== 0">
-                    <mu-icon v-if="windowContent.pressurePhoto1.length > 1" color="primary" value="chevron_left" slot="left"></mu-icon>
-                    <mu-icon v-if="windowContent.pressurePhoto1.length > 1" color="primary" value="chevron_right" slot="right"></mu-icon>
+                  <mu-carousel
+                    :hide-controls="windowContent.pressurePhoto1.length > 1 ? false : true"
+                    v-if="windowContent.pressurePhoto1.length !== 0"
+                  >
+                    <mu-icon
+                      v-if="windowContent.pressurePhoto1.length > 1"
+                      color="primary"
+                      value="chevron_left"
+                      slot="left"
+                    ></mu-icon>
+                    <mu-icon
+                      v-if="windowContent.pressurePhoto1.length > 1"
+                      color="primary"
+                      value="chevron_right"
+                      slot="right"
+                    ></mu-icon>
                     <template slot="indicator" slot-scope="{ index, active }">
                       <mu-button
                         icon
@@ -208,14 +248,31 @@
                       :key="index"
                     >
                       <!-- <img :src="item"> -->
-                      <div @click="openBigImgWin(item)" class="img" :style="{'background-image':`url(${item}`}"></div>
+                      <div
+                        @click="openBigImgWin(item)"
+                        class="img"
+                        :style="{'background-image':`url(${item}`}"
+                      ></div>
                     </mu-carousel-item>
                   </mu-carousel>
                   <p v-else>暂无图片</p>
                   <p>质保单照片：</p>
-                  <mu-carousel :hide-controls="windowContent.warrantyPhoto.length > 1 ? false : true" v-if="windowContent.warrantyPhoto.length !== 0">
-                    <mu-icon v-if="windowContent.warrantyPhoto.length > 1" color="primary" value="chevron_left" slot="left"></mu-icon>
-                    <mu-icon v-if="windowContent.warrantyPhoto.length > 1" color="primary" value="chevron_right" slot="right"></mu-icon>
+                  <mu-carousel
+                    :hide-controls="windowContent.warrantyPhoto.length > 1 ? false : true"
+                    v-if="windowContent.warrantyPhoto.length !== 0"
+                  >
+                    <mu-icon
+                      v-if="windowContent.warrantyPhoto.length > 1"
+                      color="primary"
+                      value="chevron_left"
+                      slot="left"
+                    ></mu-icon>
+                    <mu-icon
+                      v-if="windowContent.warrantyPhoto.length > 1"
+                      color="primary"
+                      value="chevron_right"
+                      slot="right"
+                    ></mu-icon>
                     <template slot="indicator" slot-scope="{ index, active }">
                       <mu-button
                         icon
@@ -231,7 +288,11 @@
                       :key="index"
                     >
                       <!-- <img :src="item"> -->
-                      <div @click="openBigImgWin(item)" class="img" :style="{'background-image':`url(${item}`}"></div>
+                      <div
+                        @click="openBigImgWin(item)"
+                        class="img"
+                        :style="{'background-image':`url(${item}`}"
+                      ></div>
                     </mu-carousel-item>
                   </mu-carousel>
                   <p v-else>暂无图片</p>
@@ -248,10 +309,23 @@
           <div class="content_box" v-if="form.contentType === 3">
             <mu-row>
               <mu-col span="6" offset="3">
-                <p>第一次细节照片：</p>
-                <mu-carousel :hide-controls="windowContent.detailPhoto2.length > 1 ? false : true" v-if="windowContent.detailPhoto2.length !== 0">
-                  <mu-icon v-if="windowContent.detailPhoto2.length > 1" color="primary" value="chevron_left" slot="left"></mu-icon>
-                  <mu-icon v-if="windowContent.detailPhoto2.length > 1" color="primary" value="chevron_right" slot="right"></mu-icon>
+                <p>第二次细节照片：</p>
+                <mu-carousel
+                  :hide-controls="windowContent.detailPhoto2.length > 1 ? false : true"
+                  v-if="windowContent.detailPhoto2.length !== 0"
+                >
+                  <mu-icon
+                    v-if="windowContent.detailPhoto2.length > 1"
+                    color="primary"
+                    value="chevron_left"
+                    slot="left"
+                  ></mu-icon>
+                  <mu-icon
+                    v-if="windowContent.detailPhoto2.length > 1"
+                    color="primary"
+                    value="chevron_right"
+                    slot="right"
+                  ></mu-icon>
                   <template slot="indicator" slot-scope="{ index, active }">
                     <mu-button
                       icon
@@ -264,14 +338,31 @@
                   </template>
                   <mu-carousel-item v-for="(item,index) in windowContent.detailPhoto2" :key="index">
                     <!-- <img :src="item"> -->
-                    <div @click="openBigImgWin(item)" class="img" :style="{'background-image':`url(${item}`}"></div>
+                    <div
+                      @click="openBigImgWin(item)"
+                      class="img"
+                      :style="{'background-image':`url(${item}`}"
+                    ></div>
                   </mu-carousel-item>
                 </mu-carousel>
                 <p v-else>暂无图片</p>
-                <p>第一次压力照片：</p>
-                <mu-carousel :hide-controls="windowContent.pressurePhoto2.length > 1 ? false : true" v-if="windowContent.pressurePhoto2.length !== 0">
-                  <mu-icon v-if="windowContent.pressurePhoto2.length > 1" color="primary" value="chevron_left" slot="left"></mu-icon>
-                  <mu-icon v-if="windowContent.pressurePhoto2.length > 1" color="primary" value="chevron_right" slot="right"></mu-icon>
+                <p>第二次压力照片：</p>
+                <mu-carousel
+                  :hide-controls="windowContent.pressurePhoto2.length > 1 ? false : true"
+                  v-if="windowContent.pressurePhoto2.length !== 0"
+                >
+                  <mu-icon
+                    v-if="windowContent.pressurePhoto2.length > 1"
+                    color="primary"
+                    value="chevron_left"
+                    slot="left"
+                  ></mu-icon>
+                  <mu-icon
+                    v-if="windowContent.pressurePhoto2.length > 1"
+                    color="primary"
+                    value="chevron_right"
+                    slot="right"
+                  ></mu-icon>
                   <template slot="indicator" slot-scope="{ index, active }">
                     <mu-button
                       icon
@@ -287,7 +378,11 @@
                     :key="index"
                   >
                     <!-- <img :src="item"> -->
-                    <div @click="openBigImgWin(item)" class="img" :style="{'background-image':`url(${item}`}"></div>
+                    <div
+                      @click="openBigImgWin(item)"
+                      class="img"
+                      :style="{'background-image':`url(${item}`}"
+                    ></div>
                   </mu-carousel-item>
                 </mu-carousel>
                 <p v-else>暂无图片</p>
@@ -296,12 +391,24 @@
           </div>
         </div>
       </mu-dialog>
-      <mu-dialog transition="slide-bottom" :open.sync="openBigImg">
-      <mu-icon value="close" @click="openBigImg = false"></mu-icon>
-      <div style="padding: 24px;">
-        <img class="bigImg" :src="bigImg" alt="">
-      </div>
-    </mu-dialog>
+      <mu-dialog
+        :overlay-close="false"
+        :esc-press-close="false"
+        transition="slide-bottom"
+        :open.sync="openBigImg"
+      >
+        <mu-icon value="close" @click="closeBigImg"></mu-icon>
+        <div ref="rotateImg_box" style="padding: 24px; position: relative;">
+          <img
+            ref="rotate_img"
+            :style="{transform:'rotateZ('+deg+'deg)'}"
+            class="bigImg"
+            :src="bigImg"
+            alt
+          >
+          <mu-icon @click="rotateImg" class="rotate_left" size="40" value="rotate_right"></mu-icon>
+        </div>
+      </mu-dialog>
     </div>
   </section>
 </template>
@@ -321,8 +428,9 @@ export default {
         size: 20,
         contentType: 0
       },
+      deg: 0,
       openBigImg: false,
-      bigImg: '',
+      bigImg: "",
       list: [],
       openWindow: false,
       columns: [
@@ -333,7 +441,13 @@ export default {
         { title: "预约试压时间", name: "time", align: "center" },
         { title: "操作", name: "control", align: "center" }
       ],
-      windowContent: {detailPhoto1: [],pressurePhoto1: [], warrantyPhoto: [],detailPhoto2: [],pressurePhoto2: []}
+      windowContent: {
+        detailPhoto1: [],
+        pressurePhoto1: [],
+        warrantyPhoto: [],
+        detailPhoto2: [],
+        pressurePhoto2: []
+      }
     };
   },
   created: function() {
@@ -369,13 +483,25 @@ export default {
             billStatus = "第一次预约";
             break;
           case 2:
-            billStatus = "第一次上传";
+            billStatus = "第一次预约";
             break;
           case 3:
-            billStatus = "第二次预约";
+            billStatus = "第一次上传";
             break;
           case 4:
+            billStatus = "第一次审核通过";
+            break;
+          case 5:
+            billStatus = "第二次预约";
+            break;
+          case 6:
+            billStatus = "第二次预约";
+            break;
+          case 7:
             billStatus = "第二次上传";
+            break;
+          case 8:
+            billStatus = "第二次审核通过";
             break;
         }
         switch (data[i].contactsType) {
@@ -494,8 +620,50 @@ export default {
       }
     },
     openBigImgWin(url) {
-      this.openBigImg = true
-      this.bigImg = url
+      this.openBigImg = true;
+      this.bigImg = url;
+    },
+    rotateImg() {
+      this.deg += 90;
+      if (this.deg >= 360) {
+        this.deg = 0;
+      }
+      let dom = this.$refs.rotate_img;
+      let deg = this.deg;
+      let box = this.$refs.rotateImg_box;
+      // let box_h = box.offsetHeight - 92;
+      if (deg === 90 || deg === 270) {
+        box.style.height = Number(dom.offsetWidth + 68) + "px";
+        box.style.width = Number(dom.offsetHeight + 68) + "px";
+        if (dom.offsetWidth >= dom.offsetHeight) {
+          if (dom.offsetHeight >= 400) {
+            dom.style.marginLeft = -92 + "px";
+            dom.style.marginTop = 92 + "px";
+          } else {
+            dom.style.marginLeft = -Number(dom.offsetHeight / 2 + 24) + "px";
+            dom.style.marginTop = Number(dom.offsetHeight / 2 + 24) + "px";
+          }
+        } else {
+          if (dom.offsetWidth >= 400) {
+            dom.style.marginLeft = 92 + "px";
+            dom.style.marginTop = -92 + "px";
+          } else {
+            dom.style.marginLeft = Number(dom.offsetWidth / 2 + 24) + "px";
+            dom.style.marginTop = -Number(dom.offsetWidth / 2 + 24) + "px";
+          }
+        }
+      } else {
+        box.style.height = Number(dom.offsetHeight + 68) + "px";
+        box.style.width = Number(dom.offsetWidth + 68) + "px";
+        dom.style.marginTop = 0 + "px";
+        dom.style.marginLeft = 0 + "px";
+      }
+      // console.log(dom.offsetWidth);
+      // console.log(dom.offsetHeight);
+    },
+    closeBigImg() {
+      this.openBigImg = false;
+      this.deg = 0;
     }
   }
 };

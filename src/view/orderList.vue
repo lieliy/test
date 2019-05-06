@@ -113,10 +113,10 @@ export default {
       let newList = [];
       for (let i = 0; i < data.length; i++) {
         let msg = "";
-        if (data[i].status === 0) {
-          msg = "支付成功";
+        if (data[i].status === 1) {
+          msg = "未支付";
         } else {
-          msg = "支付失败";
+          msg = "支付成功";
         }
         let li = {
           numId: data[i].orderNumber,
