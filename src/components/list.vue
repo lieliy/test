@@ -48,6 +48,12 @@
                 </mu-list-item>
               </mu-list>
             </mu-menu>
+            <mu-button
+              v-if="showSecendBtn"
+              small
+              color="primary"
+              @click="secendCeck(scope.row)"
+            >二次预约</mu-button>
           </td>
         </template>
       </mu-data-table>
@@ -80,7 +86,8 @@ export default {
     "showstatusBtn",
     "noDo",
     "secend",
-    "orderList"
+    "orderList",
+    "showSecendBtn"
   ],
   data() {
     return {
@@ -108,6 +115,9 @@ export default {
     },
     changePage() {
       this.$emit("changePage", this.page);
+    },
+    secendCeck(data) {
+      this.$emit("secendCeck", data)
     }
   },
   created: function() {

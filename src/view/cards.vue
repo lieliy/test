@@ -19,6 +19,8 @@
         @openWin="openWin"
         @changePage="changePage"
         :orderList="true"
+        :showSecendBtn="true"
+        @secendCeck="secendCeck"
       ></list>
       <mu-dialog
         scrollable
@@ -415,6 +417,7 @@
 
 <script>
 import sherch from "@/components/sherch";
+import Message from "muse-ui-message";
 export default {
   components: {
     sherch
@@ -664,6 +667,18 @@ export default {
     closeBigImg() {
       this.openBigImg = false;
       this.deg = 0;
+    },
+    secendCeck(data) {
+      Message.confirm(`确定二次预约?`, "注意").then(({ result }) => {
+        if (result) {
+          this.$axios
+            .post("/owner/secondOrderService", { serviceInfoId: data.id })
+            .then(res => {
+              Message.alert("二次预约成功！");
+              this.getList();
+            });
+        }
+      });
     }
   }
 };
