@@ -779,7 +779,7 @@
                       <p>保压时间：</p>
                     </mu-flex>
                     <mu-flex class="flex-demo" justify-content="end">
-                      <mu-text-field suffix="Min" v-model="changeFrom.pressureTime"></mu-text-field>
+                      <mu-text-field suffix="Min" v-model="changeFrom.keepPressureTime"></mu-text-field>
                       <!-- <mu-date-input v-model="changeFrom.keepPressureTime" type="date"></mu-date-input> -->
                     </mu-flex>
                   </mu-flex>
