@@ -12,8 +12,8 @@
           <td class="is-center" v-if="scope.row.checked">{{scope.row.checked}}</td>
           <td class="is-center">{{scope.row.name}}</td>
           <td class="is-center">{{scope.row.tel}}</td>
-          <td class="is-center" v-if="order">{{scope.row.address}}</td>
-          <td class="is-center" v-if="order">{{scope.row.createTime}}</td>
+          <td class="is-center" v-if="order || waterproof">{{scope.row.address}}</td>
+          <td class="is-center" v-if="order || waterproof">{{scope.row.createTime}}</td>
           <td v-if="scope.row.password" class="is-center">*********</td>
           <td class="is-center" v-if="secend">{{scope.row.secend}}</td>
           <td class="is-center">
@@ -87,7 +87,8 @@ export default {
     "noDo",
     "secend",
     "orderList",
-    "showSecendBtn"
+    "showSecendBtn",
+    "waterproof"
   ],
   data() {
     return {
@@ -117,7 +118,7 @@ export default {
       this.$emit("changePage", this.page);
     },
     secendCeck(data) {
-      this.$emit("secendCeck", data)
+      this.$emit("secendCeck", data);
     }
   },
   created: function() {

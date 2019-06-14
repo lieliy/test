@@ -12,6 +12,7 @@ import orderCard from '@/view/orderCard'
 import orderList from '@/view/orderList'
 import Cards from '@/view/cards'
 import CardsList from '@/view/cardsList'
+import WaterproofCards from '@/view/waterproofCards'
 
 Vue.use(Router)
 
@@ -79,6 +80,11 @@ export default new Router({
       path: '/cardsList',
       name: 'cardsList',
       component: CardsList
+    },
+    {
+      path: '/waterproofCards',
+      name: 'waterproofCards',
+      component: WaterproofCards
     }
   ]
 })

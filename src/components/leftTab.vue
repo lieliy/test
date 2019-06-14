@@ -110,6 +110,12 @@ export default {
           url: "/cards",
           urlName: "Cards",
           icon: "assignment"
+        },
+        {
+          name: "防水质保卡",
+          url: "/waterproofCards",
+          urlName: "WaterproofCards",
+          icon: "payment"
         }
       ]
     };
@@ -149,9 +155,6 @@ export default {
 .mu-item-wrapper.hover {
   background: rgba(245, 245, 245, 0.5);
   color: rgb(40, 44, 47);
-}
-.leftList .action .mu-item {
-  /* color: rgb(40, 44, 47); */
 }
 .box {
   background: rgb(40, 44, 47);
