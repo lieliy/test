@@ -116,6 +116,12 @@ export default {
           url: "/waterproofCards",
           urlName: "WaterproofCards",
           icon: "payment"
+        },
+        {
+          name: "未结名单",
+          url: "/settlementList",
+          urlName: "settlementList",
+          icon: "chrome_reader_mode"
         }
       ]
     };

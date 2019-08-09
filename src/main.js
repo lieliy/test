@@ -21,6 +21,7 @@ Vue.use({install: function(Vue){
 
 Vue.prototype.$axios = axios
 Vue.prototype.ServiceUrl = 'http://test.cqfuyuan.cn:8089'
+// Vue.prototype.ServiceUrl = 'http://192.168.2.240:8089'
 Vue.config.productionTip = false
 Vue.use(MuseUI)
 Vue.use(Message)

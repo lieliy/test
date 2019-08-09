@@ -9,6 +9,7 @@ import router from '../router'
 var cancel;
 var service = axios.create({
   baseURL: 'http://test.cqfuyuan.cn:8089',
+  // baseURL: 'http://192.168.2.240:8089',
   timeout: 5000
 })
 

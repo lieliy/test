@@ -6,7 +6,7 @@
         <mu-row gutter>
           <mu-col span="6">
             <div class="grid-cell">
-              <sherch :title="'搜索卡号或姓名'" @serch="onSerch"></sherch>
+              <sherch :title="'搜索手机号或姓名'" @serch="onSerch"></sherch>
             </div>
           </mu-col>
         </mu-row>

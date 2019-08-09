@@ -12,10 +12,12 @@
           <td class="is-center" v-if="scope.row.checked">{{scope.row.checked}}</td>
           <td class="is-center">{{scope.row.name}}</td>
           <td class="is-center">{{scope.row.tel}}</td>
-          <td class="is-center" v-if="order || waterproof">{{scope.row.address}}</td>
-          <td class="is-center" v-if="order || waterproof">{{scope.row.createTime}}</td>
+          <td class="is-center" v-if="order || waterproof || settlement">{{scope.row.address}}</td>
+          <td class="is-center" v-if="settlement">{{scope.row.totalAmount}}</td>
+          <td class="is-center" v-if="order || waterproof || settlement">{{scope.row.createTime}}</td>
           <td v-if="scope.row.password" class="is-center">*********</td>
           <td class="is-center" v-if="secend">{{scope.row.secend}}</td>
+          <td class="is-center" v-if="settlement">{{scope.row.checkStatus === 0 ? "未结算" : "已结算"}}</td>
           <td class="is-center">
             <mu-button
               v-if="scope.row.content"
@@ -54,6 +56,12 @@
               color="primary"
               @click="secendCeck(scope.row)"
             >二次预约</mu-button>
+            <mu-button
+              v-if="settlement"
+              small
+              color="primary"
+              @click="settlementUp(scope.row)"
+            >结算</mu-button>
           </td>
         </template>
       </mu-data-table>
@@ -88,7 +96,8 @@ export default {
     "secend",
     "orderList",
     "showSecendBtn",
-    "waterproof"
+    "waterproof",
+    "settlement"
   ],
   data() {
     return {
@@ -119,6 +128,9 @@ export default {
     },
     secendCeck(data) {
       this.$emit("secendCeck", data);
+    },
+    settlementUp(data) {
+      this.$emit("settlement", data)
     }
   },
   created: function() {
